@@ -1,231 +1,136 @@
 # crispy-bird-delivery-map
- interactive delivery map area searcher.
-[START-HERE.html](https://github.com/user-attachments/files/34368284/START-HERE.html)
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Crispy Bird Delivery Map – Setup Guide</title>
-<style>
-  :root {
-    --bg: #fbfbf9; --surface: #ffffff; --ink: #1d1f22; --muted: #5f646b; --line: #e4e6e1;
-    --green: #2e9e4f; --green-soft: #e7f5ea; --grey: #5d626b; --grey-soft: #eff0f1; --warn: #9a5b00; --warn-soft: #fff4e0;
-    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #15171a; --surface: #1d2024; --ink: #eceeea; --muted: #a3a8ad; --line: #30343a;
-      --green: #55c776; --green-soft: #1d3324; --grey: #a9aeb5; --grey-soft: #272a2f; --warn: #f0b04a; --warn-soft: #33270f; color-scheme: dark; }
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  .wrap { max-width: 780px; margin: 0 auto; padding: 40px 16px 80px; }
-  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 8px; text-wrap: balance; }
-  h2 { font-size: 22px; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); text-wrap: balance; }
-  h3 { font-size: 17px; margin: 24px 0 6px; }
-  p, li { max-width: 68ch; }
-  .lead { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
-  a { color: var(--green); }
-  code, pre { font-family: var(--mono); font-size: 13.5px; }
-  code { background: var(--grey-soft); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
-  .steps > li, li { min-width: 0; overflow-wrap: anywhere; }
-  pre { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; line-height: 1.5; }
-  .steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 10px; }
-  .steps > li { counter-increment: s; position: relative; padding-left: 40px; }
-  .steps > li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%;
-    background: var(--green); color: #fff; font-weight: 700; font-size: 13px; display: grid; place-items: center; }
-  .note { border-radius: 10px; padding: 12px 16px; margin: 16px 0; background: var(--green-soft); }
-  .note.warn { background: var(--warn-soft); }
-  .note.warn strong { color: var(--warn); }
-  .toc { display: grid; gap: 4px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin: 0; }
-  .toc a { text-decoration: none; }
-  .table { overflow-x: auto; margin: 12px 0; }
-  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
-  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
-  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
-  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
-  .free { background: var(--green-soft); color: var(--green); }
-  .paid { background: var(--warn-soft); color: var(--warn); }
-  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .shots figure { margin: 0; }
-  .shots img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
-  figcaption { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .folder { font-family: var(--mono); font-size: 14px; }
-</style>
-</head>
-<body>
-<div class="wrap">
 
-<h1>The Crispy Bird delivery map</h1>
-<p class="lead">This replaces the delivery-area table on your information page with a map. Customers type their postcode or address and see straight away whether you deliver there, what the minimum order is, and an <b>Order now</b> button.</p>
+Interactive delivery map area searcher for [The Crispy Bird](https://bestellen.thecrispybird.nl/).
 
-<nav class="toc">
-  <a href="#try">1. Try it now (2 minutes)</a>
-  <a href="#before">2. Before it goes live</a>
-  <a href="#google">3. Get a Google Maps key</a>
-  <a href="#online">4. Put the files online</a>
-  <a href="#add">5. Add it to your website</a>
-  <a href="#areas">6. Open and close delivery areas</a>
-  <a href="#kpi">7. Measuring results (KPIs)</a>
-  <a href="#costs">8. Costs and paid options</a>
-  <a href="#folder">9. What's in this folder</a>
-</nav>
+- **Live prototype:** https://ricard-sayhi.github.io/crispy-bird-delivery-map/
+- **Setup guide for the site owner:** https://ricard-sayhi.github.io/crispy-bird-delivery-map/guide.html
+- **Iframe version:** https://ricard-sayhi.github.io/crispy-bird-delivery-map/widget/embed.html
 
-<h2 id="try">1. Try it now</h2>
-<ol class="steps">
-  <li>Open the folder <code>1-prototype</code> and double-click <code>prototype.html</code>. It opens in your web browser; there is nothing to install.</li>
-  <li>Type a postcode, for example <code>3432</code>, and press Enter. Click the grey 🔒 <b>4131</b> area to see how a temporarily closed area looks.</li>
-  <li>The map looks dark and says "For development purposes only". That is normal until you add a Google Maps key (step 3). Paste the key into the box at the top of the prototype and click <b>Load</b> to see the normal Google Maps view.</li>
-</ol>
+The map runs in Google's "development only" mode (darkened, watermarked) until a Google Maps API key
+is added: paste it in the box at the top of the prototype, or add `?key=YOUR_KEY` to the iframe URL.
+Add `https://ricard-sayhi.github.io/*` to the key's allowed websites first.
 
-<div class="shots">
-  <figure><img src="4-screenshots/1-overview-preview-without-key.png" alt="Map overview with the delivery areas in green"><figcaption>Overview (shown without a key, hence the dark map)</figcaption></figure>
-  <figure><img src="4-screenshots/2-locked-area-preview-without-key.png" alt="Locked area 4131 with its result card"><figcaption>A temporarily closed area</figcaption></figure>
-  <figure><img src="4-screenshots/3-phone-preview-without-key.png" alt="The map on a phone"><figcaption>On a phone</figcaption></figure>
-</div>
+> ⚠ The area borders are still approximate placeholders. See "Replace the placeholder area shapes" below.
 
-<h3>What customers can do</h3>
-<ul>
-  <li><b>Search</b> by postcode (<code>3401</code> or <code>3401 AB 12</code>), street and house number, neighbourhood or town.</li>
-  <li><b>Filter</b> by town, by minimum order amount, or pick a postcode from a list. Closed areas can be shown or hidden.</li>
-  <li>Get one of three answers: <b>We deliver here!</b> (with minimum order, delivery cost and an Order now button), <b>Temporarily closed</b>, or <b>We don't deliver here (yet)</b>.</li>
-  <li>Switch between <b>Dutch and English</b>.</li>
-</ul>
+---
 
-<h2 id="before">2. Before it goes live</h2>
-<div class="note warn"><strong>Three things still need doing.</strong> The prototype works, but these are needed for the real website:</div>
-<div class="table"><table>
-  <tr><th>What</th><th>Why</th><th>Who</th></tr>
-  <tr><td><b>Google Maps key</b></td><td>Without it the map is dark and watermarked.</td><td>You, about 15 minutes (step 3)</td></tr>
-  <tr><td><b>Exact area borders</b></td><td>The borders in this version are <b>approximate</b>; the map says so in its legend. The official postcode borders (CBS/Kadaster, free) can be downloaded with one command, <code>npm run boundaries</code>, in the source code folder. Optionally, Google's own postcode outlines can be switched on (see the section on Google's own outlines in step 3).</td><td>Your web developer, about 10 minutes</td></tr>
-  <tr><td><b>Address search check</b></td><td>The street and house-number search uses PDOK, the free Dutch government address service. It could not be tested while this was built. Postcode search works without it. Test a few addresses once the map is online.</td><td>You, 2 minutes</td></tr>
-</table></div>
+## About the project
+An embeddable `<crispy-delivery-map>` widget. It replaces the delivery-area table with:
 
-<h2 id="google">3. Get a Google Maps key</h2>
-<p>The map uses Google Maps. Google needs a "key" to know whose map it is. A key is free to create; Google asks for a payment card, but small websites normally stay within the free monthly allowance (see step 8).</p>
-<ol class="steps">
-  <li>Go to <a href="https://console.cloud.google.com/">console.cloud.google.com</a> and sign in with a Google account for the business.</li>
-  <li>Create a project, for example "Crispy Bird map", and add a billing account when asked.</li>
-  <li>Open <b>APIs &amp; Services → Library</b>, search for <b>Maps JavaScript API</b> and click <b>Enable</b>.</li>
-  <li>Open <b>APIs &amp; Services → Credentials → Create credentials → API key</b>. Copy the key.</li>
-  <li>Click the key to <b>restrict</b> it. This stops other websites from using it.
-    <ul>
-      <li>Application restrictions: <b>Websites</b>. Add <code>https://bestellen.thecrispybird.nl/*</code> and the address where the map files are hosted (step 4).</li>
-      <li>API restrictions: <b>Maps JavaScript API</b> only.</li>
-    </ul>
-  </li>
-  <li>Recommended: in <b>Billing → Budgets &amp; alerts</b>, set a small monthly budget (for example €10) so you get an e-mail if usage is ever unexpectedly high.</li>
-</ol>
+- the standard Google Maps view (streets, place names, Map/Satellite switch) with the delivery areas drawn on top. Delivery areas have a green outline and a light green fill. Temporarily closed areas are grey, hatched and dashed, with a 🔒 badge. Everything outside the zone is slightly darkened, like a game map.
+- one search box for postcode (`3401` or `3401AB 12`), street + number, neighbourhood or town. The result says *We deliver here* (with minimum order and delivery cost, plus an **Order now** button), *Temporarily closed*, or *Not in our area*.
+- filters for town, minimum order and postcode, plus a switch to show or hide closed areas.
+- Dutch and English, with a switch.
 
-<h3>Optional: Google's own postcode outlines</h3>
-<p>Google can draw its own postcode outlines on the map, exactly as on Google Maps. The map switches to them automatically when this is set up, and falls back to the bundled borders if it isn't. Whether Google offers postcode outlines for the Netherlands could not be confirmed while this was built, so check Google's boundary coverage list first.</p>
-<ol class="steps">
-  <li>In Google Cloud, open <b>Google Maps Platform → Map Management</b> and create a <b>Map ID</b> (type JavaScript, vector).</li>
-  <li>Create a <b>map style</b> for it and switch on the <b>Postal code</b> feature layer.</li>
-  <li>Also enable the <b>Geocoding API</b>. The map uses it once per visitor to find each postcode; a developer can store the results with <code>npm run place-ids</code> so visitors don't need to.</li>
-  <li>Add the Map ID to the code in step 5 as <code>map-id="…"</code>.</li>
-</ol>
-<p>When Google draws the outlines, the closed area shows as grey without the striped pattern, and the 🔒 badge stays.</p>
+| Part | Tech | Cost / key |
+|---|---|---|
+| Map | [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript) (default Google view) | API key with billing enabled; free monthly allowance, see below |
+| Address search | [PDOK Locatieserver](https://www.pdok.nl/pdok-locatieserver) (Dutch government) | free, no key |
+| Area shapes | CBS & Kadaster PC4 postcode areas (CC BY 4.0), via Opendatasoft | free |
+| Area data | `public/areas.csv`, or a published Google Sheet | free |
 
-<h2 id="online">4. Put the files online</h2>
-<p>The four files in <code>2-website-files</code> need a web address. Choose one option:</p>
-<h3>Option A: Netlify (free, no technical knowledge)</h3>
-<ol class="steps">
-  <li>Go to <a href="https://app.netlify.com/drop">app.netlify.com/drop</a> and create a free account.</li>
-  <li>Drag the whole <code>2-website-files</code> folder onto the page.</li>
-  <li>You get an address like <code>https://crispy-map-123.netlify.app</code>. You can rename it under Site settings. Add this address to your Google key's allowed websites (step 3).</li>
-  <li>Test it: open <code>https://YOUR-ADDRESS/embed.html?key=YOUR_KEY</code>.</li>
-</ol>
-<h3>Option B: your own web hosting</h3>
-<p>If you already have hosting, for example for a main website, upload the folder there, e.g. to <code>https://thecrispybird.nl/delivery-map/</code>. Cloudflare Pages and GitHub Pages are other free options.</p>
+## Commands
 
-<h2 id="add">5. Add it to your website</h2>
-<p>Your ordering site (<code>bestellen.thecrispybird.nl</code>) is run by an ordering platform. Ask the platform's support team: <i>"Can I add custom HTML, a script, or an iframe to my Information page?"</i> Then use the matching option. Replace the capital-letter parts with your own values.</p>
+```bash
+npm install
+npm run dev          # local demo at http://localhost:5173
+npm run build        # → dist/ (upload this folder anywhere)
+npm run boundaries   # download the OFFICIAL postcode shapes (see below)
+```
 
-<h3>If custom HTML / scripts are allowed (best)</h3>
-<pre>&lt;crispy-delivery-map
+## ⚠ Replace the placeholder area shapes first
+
+`public/boundaries.geojson` currently has **approximate** shapes. They are generated around each postcode's centre point, and the map shows "Area borders are approximate" while they're in use. Get the real borders with:
+
+```bash
+npm run boundaries && npm run build
+```
+
+This needs internet access to `public.opendatasoft.com`. After it runs, the warning disappears.
+
+## Google Maps API key
+
+1. Go to <https://console.cloud.google.com/>, create a project (e.g. "Crispy Bird map") and set up billing. Google requires billing to be enabled, but every Maps API has a free monthly usage allowance; a restaurant info page normally stays within it. Check [current pricing](https://mapsplatform.google.com/pricing/) and optionally set a budget alert.
+2. **APIs & Services → Library →** enable **Maps JavaScript API**. That is the only Google API the widget uses: the address search uses the free PDOK service.
+3. **APIs & Services → Credentials → Create credentials → API key.** Then restrict it:
+   - *Application restrictions:* **Websites**, and add `https://bestellen.thecrispybird.nl/*` plus the address where you host the widget (e.g. `https://YOUR-HOST/*`). Add `http://localhost:5173/*` for local testing.
+   - *API restrictions:* **Maps JavaScript API** only.
+4. Put the key in the `google-maps-key` attribute (or `?key=` for the iframe). A browser key is visible to visitors by design; the restrictions above stop others from using it.
+
+Without a key the map still loads, but Google darkens it, shows "For development purposes only" watermarks and a "can't load Google Maps correctly" dialog.
+
+Optional: create a **Map ID** (Google Cloud → Map Management) and pass it as `map-id` to use Google's newer vector map and cloud-based styling.
+
+## Updating areas: Google Sheet
+
+1. Make a new Google Sheet and use **File → Import → Upload `public/areas.csv`**. The columns are:
+   `postcode, city, neighbourhood, min_order, delivery_fee, free_from, status`
+2. To close an area, set `status` to `locked` (or `gesloten`). To reopen it, set it to `open`. Amounts can be written as `17.50` or `17,50`.
+3. Go to **File → Share → Publish to web**, choose the sheet and **Comma-separated values (.csv)**, then click Publish and copy the link.
+4. Give that link to the widget: `areas-csv="…"` for the script embed, or `?sheet=…` for the iframe. The map then reads the sheet on every page load. Google may cache the published file for up to about 5 minutes.
+
+If the sheet can't be loaded, the widget falls back to the bundled `areas.csv`.
+A **new** postcode also needs a shape, so run `npm run boundaries` again after adding one. Status and price changes don't need a rebuild.
+
+## Embedding
+
+Upload the contents of `dist/` to any static host, e.g. Netlify, Cloudflare Pages or GitHub Pages. The example URL below is a placeholder.
+
+**A. Script (best, if the ordering platform allows custom HTML/JS):**
+
+```html
+<crispy-delivery-map
   google-maps-key="YOUR_GOOGLE_MAPS_KEY"
   lang="nl"
-  order-url="https://bestellen.thecrispybird.nl/"&gt;
-&lt;/crispy-delivery-map&gt;
-&lt;script src="https://YOUR-ADDRESS/crispy-delivery-map.js"&gt;&lt;/script&gt;</pre>
+  areas-csv="https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv"
+  order-url="https://bestellen.thecrispybird.nl/">
+</crispy-delivery-map>
+<script src="https://YOUR-HOST/crispy-delivery-map.js"></script>
+```
 
-<h3>If only an iframe (embed) is allowed</h3>
-<pre>&lt;iframe src="https://YOUR-ADDRESS/embed.html?key=YOUR_GOOGLE_MAPS_KEY&amp;lang=nl"
-  style="width:100%;height:760px;border:0" loading="lazy" title="Bezorggebied"&gt;&lt;/iframe&gt;</pre>
+The widget's controls are isolated in a Shadow DOM. The map itself and its badges sit in the page, because Google Maps requires that; their CSS classes all start with `cdm-`, so they won't clash with the site. Colours can be changed from the host page:
 
-<h3>If neither is allowed</h3>
-<p>Put a link or button on the information page, e.g. "Check if we deliver to you", pointing to <code>https://YOUR-ADDRESS/embed.html?key=YOUR_KEY&amp;lang=nl</code>. The map then opens as its own page.</p>
+```css
+crispy-delivery-map { --cdm-green: #1f8f45; --cdm-locked: #8b9098; --cdm-map-height: 600px; }
+```
 
-<div class="note">The map's colours can be changed to match the brand. Ask a developer to add, for example, <code>crispy-delivery-map { --cdm-green: #1f8f45; }</code> to the site's CSS.</div>
+**B. Iframe (if only iframes or HTML embeds are allowed):**
 
-<h2 id="areas">6. Open and close delivery areas</h2>
-<p>The list of areas is a simple spreadsheet. With a Google Sheet, you or your staff can close or reopen an area in seconds, without touching the website.</p>
-<ol class="steps">
-  <li>Create a new Google Sheet. Choose <b>File → Import → Upload</b> and pick <code>3-area-list/delivery-areas.csv</code>.</li>
-  <li>To <b>close</b> an area, change its <code>status</code> to <code>locked</code> (or <code>gesloten</code>). To <b>reopen</b> it, change it to <code>open</code>. Minimum order and delivery cost can be edited too, e.g. <code>17,50</code>.</li>
-  <li>Choose <b>File → Share → Publish to web</b>, select the sheet, choose <b>Comma-separated values (.csv)</b>, click Publish, and copy the link.</li>
-  <li>Add the link to the code from step 5: <code>areas-csv="THE_LINK"</code> for the script version, or <code>&amp;sheet=THE_LINK</code> at the end of the iframe address.</li>
-</ol>
-<p>Changes appear on the map within about 5 minutes; Google refreshes published sheets with a short delay. A <b>new</b> postcode also needs its border added, which is a quick job for a developer (<code>npm run boundaries</code>).</p>
-<div class="note">Please check the neighbourhood names. The original list had some names that look machine-translated: "Decisive" (3435 is <b>Doorslag</b>, already corrected), "Rural Area", "Provincial Road", "Utrecht Industrial Area". You can rename them in the sheet.</div>
+```html
+<iframe src="https://YOUR-HOST/embed.html?key=YOUR_GOOGLE_MAPS_KEY&lang=nl&sheet=ENCODED_SHEET_URL"
+        style="width:100%;height:760px;border:0" loading="lazy" title="Bezorggebied"></iframe>
+```
 
-<h2 id="kpi">7. Measuring results (KPIs)</h2>
-<p>The map reports what customers do, without sending any addresses or personal data. If your site uses <b>Google Analytics 4</b> or <b>Google Tag Manager</b>, these events arrive there automatically:</p>
-<div class="table"><table>
-  <tr><th>Event</th><th>When</th><th>Details sent</th></tr>
-  <tr><td><code>delivery_map_result</code></td><td>A customer gets an answer</td><td><code>result</code>: open / locked / outside, <code>postcode</code>, <code>source</code>: address or area click</td></tr>
-  <tr><td><code>delivery_map_order_click</code></td><td>A customer clicks <b>Order now</b></td><td><code>postcode</code></td></tr>
-  <tr><td><code>delivery_map_filter</code></td><td>A customer uses a filter</td><td><code>town</code>, <code>min_order</code>, <code>postcode</code></td></tr>
-</table></div>
-<h3>Useful numbers to watch</h3>
-<ul>
-  <li><b>Lookups that end in an order click:</b> <code>order_click</code> ÷ <code>result</code> where result = open. How many people who can order actually click through.</li>
-  <li><b>Demand outside your area:</b> the number of results with <code>result</code> = outside. Many searches from one direction can justify expanding there.</li>
-  <li><b>Missed demand in closed areas:</b> results with <code>result</code> = locked, per postcode. This shows what a closed area costs you.</li>
-  <li><b>Busiest areas:</b> results per postcode. Useful for local flyers or offers.</li>
-</ul>
-<p>If the site has no analytics yet, Google Analytics 4 is free. Your developer or ordering platform can add it; the map's events then appear under <b>Reports → Engagement → Events</b>. For postcode-level reports, register <code>postcode</code> and <code>result</code> as custom dimensions in GA4 (Admin → Custom definitions).</p>
+### Attributes
 
-<h2 id="costs">8. Costs and paid options</h2>
-<p>Everything this map needs can run for <b>€0 per month</b> at the traffic level of a restaurant website. Prices change, so check the linked pages for current numbers.</p>
-<div class="table"><table>
-  <tr><th>Item</th><th>Cost</th><th>Notes</th></tr>
-  <tr><td>Google Maps (map display)</td><td><span class="pill free">Free allowance</span> then <span class="pill paid">pay per use</span></td><td>Google gives a free number of map loads each month (around 10,000 for the Maps JavaScript API at the time of writing), then charges per 1,000 loads. Set a budget alert. <a href="https://mapsplatform.google.com/pricing/">Pricing</a></td></tr>
-  <tr><td>Google's own postcode outlines (optional)</td><td><span class="pill free">Free allowance</span> then <span class="pill paid">pay per use</span></td><td>Uses a Map ID (free) and the Geocoding API (free monthly allowance, then per 1,000 lookups). Storing the postcode IDs once (<code>npm run place-ids</code>) keeps this close to zero.</td></tr>
-  <tr><td>Address search (PDOK)</td><td><span class="pill free">Free</span></td><td>Dutch government service, no account needed.</td></tr>
-  <tr><td>Official postcode borders (CBS/Kadaster)</td><td><span class="pill free">Free</span></td><td>Open data (CC BY 4.0). The credit "© CBS, Kadaster" is already shown on the map.</td></tr>
-  <tr><td>Google Sheet for areas</td><td><span class="pill free">Free</span></td><td>Any Google account.</td></tr>
-  <tr><td>Hosting (Netlify / Cloudflare Pages / GitHub Pages)</td><td><span class="pill free">Free tier</span></td><td>The free tiers are far more than this map needs. Paid plans only matter for team features or very high traffic.</td></tr>
-  <tr><td>Google Analytics 4</td><td><span class="pill free">Free</span></td><td>For the KPIs in step 7.</td></tr>
-</table></div>
-<h3>Optional paid upgrades</h3>
-<ul>
-  <li><b>Google address autocomplete (Places API).</b> Can replace the free PDOK search if you prefer Google's suggestions. It is paid per use after a free allowance, and needs a small code change.</li>
-  <li><b>Custom map styling</b> (Map ID with your brand colours). The styling itself is free; it uses Google's vector map.</li>
-  <li><b>Developer time</b> for brand styling, connecting the area list directly to your ordering platform (if it has a data feed), or a custom domain.</li>
-</ul>
+| Attribute | Default | |
+|---|---|---|
+| `google-maps-key` | – | **required** for production (see above) |
+| `map-id` | – | optional Google Map ID |
+| `lang` | browser language (`nl`/`en`) | starting language (Google's map labels follow the starting language) |
+| `areas-csv` | bundled `areas.csv` | published Google Sheet CSV URL |
+| `boundaries` | bundled `boundaries.geojson` | area shapes |
+| `order-url` | `https://bestellen.thecrispybird.nl/` | target of the **Order now** button |
 
-<h2 id="folder">9. What's in this folder</h2>
-<div class="table"><table class="folder">
-  <tr><td>START-HERE.html</td><td>This guide</td></tr>
-  <tr><td>1-prototype/prototype.html</td><td>Self-contained demo; double-click to open</td></tr>
-  <tr><td>2-website-files/</td><td>The four files to put online (step 4)</td></tr>
-  <tr><td>3-area-list/delivery-areas.csv</td><td>The area list, ready to import into Google Sheets (step 6)</td></tr>
-  <tr><td>4-screenshots/</td><td>Preview images (taken without a Google key, hence the dark map)</td></tr>
-  <tr><td>5-source-code/</td><td>For a web developer: full source and build scripts, with technical notes in its README.md</td></tr>
-</table></div>
+## Files
 
-<h3>Settings reference (for the code in step 5)</h3>
-<div class="table"><table>
-  <tr><th>Setting</th><th>What it does</th></tr>
-  <tr><td><code>google-maps-key</code></td><td>Your Google Maps key (required)</td></tr>
-  <tr><td><code>lang</code></td><td><code>nl</code> or <code>en</code>. The starting language; customers can still switch.</td></tr>
-  <tr><td><code>areas-csv</code></td><td>Link to the published Google Sheet (step 6)</td></tr>
-  <tr><td><code>order-url</code></td><td>Where the <b>Order now</b> button goes</td></tr>
-  <tr><td><code>map-id</code></td><td>Optional Google Map ID (Google's own postcode outlines and custom styling)</td></tr>
-</table></div>
+```
+src/widget.ts      the custom element (map, search, filters, result card)
+src/gmap.ts        Google Maps loader, HTML badges, striped overlay for locked areas
+src/data.ts        CSV parsing + joining areas to shapes
+src/pdok.ts        PDOK address search
+src/i18n.ts        NL / EN text
+src/styles.ts      all styling (theme tokens at the top)
+public/areas.csv   delivery areas (fallback when no sheet is set)
+public/boundaries.geojson   area shapes
+scripts/           boundary download + placeholder generator
+```
 
-</div>
-</body>
-</html>
+## GitHub Pages
+
+The site is served from `docs/`: `docs/index.html` (prototype), `docs/guide.html` (setup guide) and
+`docs/widget/` (the built widget files). After changing the code, refresh them with:
+
+```bash
+npm run build && node scripts/make-prototype.mjs && cp prototype.html docs/index.html && cp dist/* docs/widget/
+```

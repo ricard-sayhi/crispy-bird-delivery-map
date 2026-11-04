@@ -1,0 +1,30 @@
+{
+  "name": "crispy-delivery-map",
+  "version": "1.0.0",
+  "description": "Interactive delivery-area map widget for The Crispy Bird",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc",
+    "boundaries": "node scripts/fetch-boundaries.mjs",
+    "boundaries:approx": "node scripts/approx-boundaries.mjs",
+    "place-ids": "node scripts/place-ids.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/bbox": "^7.4.0",
+    "@turf/boolean-point-in-polygon": "^7.4.0",
+    "@turf/centroid": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/google.maps": "^3.66.9",
+    "d3-delaunay": "^6.0.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  },
+  "private": true
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Crispy Bird – Bezorggebied</title>
+  <style>html, body { margin: 0; background: transparent; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }</style>
+</head>
+<body>
+  <!-- Iframe version. Settings can be passed in the URL: embed.html?key=<Google Maps API key>&lang=en&sheet=<published CSV url> -->
+  <crispy-delivery-map id="m"></crispy-delivery-map>
+  <script>
+    var q = new URLSearchParams(location.search), m = document.getElementById('m');
+    if (q.get('key')) m.setAttribute('google-maps-key', q.get('key'));
+    if (q.get('mapid')) m.setAttribute('map-id', q.get('mapid'));
+    if (q.get('lang')) m.setAttribute('lang', q.get('lang'));
+    if (q.get('sheet')) m.setAttribute('areas-csv', q.get('sheet'));
+    if (q.get('order')) m.setAttribute('order-url', q.get('order'));
+  </script>
+  <script src="crispy-delivery-map.js"></script>
+</body>
+</html>
