@@ -8,13 +8,16 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Crispy Bird Delivery Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap">
 <style>
-  body { margin: 0; padding: 24px 16px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #fafaf8; color: #1d1f22; }
+  body { margin: 0; padding: 24px 16px; font-family: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #fafaf8; color: #1d1f22; }
   main { max-width: 1040px; margin: 0 auto; display: grid; gap: 16px; }
   h1 { font-size: 28px; margin: 0; }
   .key { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: #6a6f76; }
+  .key input:focus { outline: none; border-color: #c8902a; }
   .key input { flex: 1 1 260px; height: 34px; padding: 0 12px; border: 1.5px solid #e3e5e1; border-radius: 999px; font: inherit; }
-  .key button { height: 34px; padding: 0 14px; border: 0; border-radius: 999px; background: #2e9e4f; color: #fff; font-weight: 700; cursor: pointer; }
+  .key button { height: 34px; padding: 0 14px; border: 0; border-radius: 999px; background: #c8902a; color: #241703; font-weight: 700; cursor: pointer; }
 </style>
 </head>
 <body>

@@ -198,8 +198,18 @@ class CrispyDeliveryMap extends HTMLElement {
     this.renderLegend();
 
     const mapId = this.getAttribute('map-id') || undefined;
+    // Darker green for grass, parks and woodland so they stand out on the base map.
+    // (With a Map ID, Google ignores this list: set the same colours in the Map ID's cloud style.)
+    const grass = this.color('--cdm-grass');
+    const styles: google.maps.MapTypeStyle[] = [
+      { featureType: 'landscape.natural.landcover', elementType: 'geometry', stylers: [{ color: grass }] },
+      { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: grass }] },
+      { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#ffffff' }] },
+      { featureType: 'poi.park', elementType: 'labels.text.stroke', stylers: [{ color: grass }] },
+    ];
     const map = (this.map = new google.maps.Map(this.mapEl, {
       mapId,
+      styles: mapId ? undefined : styles,
       center: { lat: 52.03, lng: 5.1 },
       zoom: 11,
       gestureHandling: 'cooperative', // one finger scrolls the page on phones; two fingers move the map

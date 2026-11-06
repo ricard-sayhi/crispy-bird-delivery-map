@@ -1,9 +1,16 @@
 export const css = /* css */ `
 :host {
-  /* Theme tokens: override these from the host page, e.g. crispy-delivery-map { --cdm-green: #1f8f45 } */
+  /* Theme tokens: override these from the host page, e.g. crispy-delivery-map { --cdm-accent: #c8902a } */
+  /* Brand: The Crispy Bird theme colour (bestellen.thecrispybird.nl) for buttons and interactive UI. */
+  --cdm-accent: #c8902a;
+  --cdm-accent-dark: #a9761f;
+  --cdm-accent-ink: #241703; /* text on the accent: dark, because white on #c8902a fails contrast */
+  /* Delivery areas stay green. */
   --cdm-green: #2e9e4f;
   --cdm-green-dark: #1f7a3a;
   --cdm-green-fill: #4cc46c;
+  /* Grass, parks and woodland on the Google base map (darker so they stand out). */
+  --cdm-grass: #2f6b3a;
   --cdm-locked: #8b9098;
   --cdm-locked-dark: #5d626b;
   --cdm-outside: #c2410c;
@@ -34,10 +41,10 @@ button, input, select { font: inherit; color: inherit; }
   border: 1.5px solid var(--cdm-line); background: var(--cdm-subtle); font-size: 16px; outline: none;
   transition: border-color .15s, background .15s, box-shadow .15s;
 }
-.search input:focus { border-color: var(--cdm-green); background: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--cdm-green) 18%, transparent); }
+.search input:focus { border-color: var(--cdm-accent); background: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--cdm-accent) 22%, transparent); }
 .search input::-webkit-search-cancel-button { display: none; }
 .search .clear { position: absolute; right: 8px; top: 50%; translate: 0 -50%; width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; color: var(--cdm-muted); font-size: 20px; line-height: 1; }
-.search .clear:hover { background: var(--cdm-line); }
+.search .clear:hover { background: var(--cdm-line); color: var(--cdm-accent-dark); }
 .search .clear[hidden] { display: none; }
 
 .suggest {
@@ -48,7 +55,7 @@ button, input, select { font: inherit; color: inherit; }
 .suggest[hidden] { display: none; }
 .suggest .group { padding: 8px 10px 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cdm-muted); }
 .suggest .item { display: flex; gap: 10px; align-items: center; padding: 9px 10px; border-radius: 10px; cursor: pointer; font-size: 14.5px; }
-.suggest .item[aria-selected="true"], .suggest .item:hover { background: var(--cdm-subtle); }
+.suggest .item[aria-selected="true"], .suggest .item:hover { background: color-mix(in srgb, var(--cdm-accent) 12%, #fff); }
 .suggest .item .dot { width: 10px; height: 10px; border-radius: 3px; flex: none; background: var(--cdm-green-fill); outline: 2px solid var(--cdm-green); outline-offset: -1px; }
 .suggest .item .dot.locked { background: var(--cdm-locked); outline-color: var(--cdm-locked-dark); }
 .suggest .item .dot.addr { background: none; outline: none; width: 14px; height: 14px; color: var(--cdm-muted); }
@@ -56,7 +63,7 @@ button, input, select { font: inherit; color: inherit; }
 .suggest .note { padding: 10px; color: var(--cdm-muted); font-size: 13.5px; }
 
 .lang { height: 48px; min-width: 48px; border-radius: 999px; border: 1.5px solid var(--cdm-line); background: var(--cdm-surface); font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: .04em; }
-.lang:hover { border-color: var(--cdm-muted); }
+.lang:hover { border-color: var(--cdm-accent); color: var(--cdm-accent-dark); }
 
 /* ---------- Filters ---------- */
 .filters { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; padding: 0 14px 12px; }
@@ -68,8 +75,8 @@ button, input, select { font: inherit; color: inherit; }
   height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--cdm-line); background: var(--cdm-surface);
   font-size: 13.5px; cursor: pointer; white-space: nowrap; transition: background .12s, border-color .12s, color .12s;
 }
-.chip:hover { border-color: var(--cdm-muted); }
-.chip[aria-pressed="true"] { background: var(--cdm-ink); border-color: var(--cdm-ink); color: #fff; }
+.chip:hover { border-color: var(--cdm-accent); }
+.chip[aria-pressed="true"] { background: var(--cdm-accent); border-color: var(--cdm-accent); color: var(--cdm-accent-ink); font-weight: 700; }
 .select { height: 32px; border-radius: 999px; border: 1.5px solid var(--cdm-line); background: var(--cdm-surface); padding: 0 10px; font-size: 13.5px; max-width: 220px; cursor: pointer; }
 .toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer; user-select: none; }
 .toggle input { appearance: none; width: 34px; height: 20px; border-radius: 999px; background: var(--cdm-line); position: relative; cursor: pointer; transition: background .15s; margin: 0; }
@@ -121,8 +128,9 @@ button, input, select { font: inherit; color: inherit; }
 .card dl div { flex: 1; background: var(--cdm-subtle); border-radius: 10px; padding: 8px 10px; }
 .card dt { font-size: 11px; color: var(--cdm-muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
 .card dd { margin: 2px 0 0; font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums; }
-.card .cta { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 12px; height: 44px; border-radius: 999px; background: var(--cdm-green); color: #fff; text-decoration: none; font-weight: 800; font-size: 15px; }
-.card .cta:hover { background: var(--cdm-green-dark); }
+.card .cta { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 12px; height: 44px; border-radius: 999px; background: var(--cdm-accent); color: var(--cdm-accent-ink); text-decoration: none; font-weight: 800; font-size: 15px; }
+.card .cta:hover { background: var(--cdm-accent-dark); }
+.card .cta:focus-visible, .chip:focus-visible, .lang:focus-visible, .select:focus-visible { outline: 3px solid color-mix(in srgb, var(--cdm-accent) 55%, transparent); outline-offset: 2px; }
 
 
 @media (max-width: 600px) {

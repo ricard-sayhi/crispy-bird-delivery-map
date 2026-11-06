@@ -91,7 +91,12 @@ Upload the contents of `dist/` to any static host, e.g. Netlify, Cloudflare Page
 The widget's controls are isolated in a Shadow DOM. The map itself and its badges sit in the page, because Google Maps requires that; their CSS classes all start with `cdm-`, so they won't clash with the site. Colours can be changed from the host page:
 
 ```css
-crispy-delivery-map { --cdm-green: #1f8f45; --cdm-locked: #8b9098; --cdm-map-height: 600px; }
+crispy-delivery-map {
+  --cdm-accent: #c8902a;  /* brand colour: buttons, selected filters, focus (Crispy Bird theme colour) */
+  --cdm-green: #2e9e4f;   /* delivery areas */
+  --cdm-grass: #2f6b3a;   /* grass and parks on the Google map (ignored when a map-id is set: style it in the Map ID instead) */
+  --cdm-map-height: 600px;
+}
 ```
 
 **B. Iframe (if only iframes or HTML embeds are allowed):**

@@ -154,7 +154,7 @@
 <h3>If neither is allowed</h3>
 <p>Put a link or button on the information page, e.g. "Check if we deliver to you", pointing to <code>https://YOUR-ADDRESS/embed.html?key=YOUR_KEY&amp;lang=nl</code>. The map then opens as its own page.</p>
 
-<div class="note">The map's colours can be changed to match the brand. Ask a developer to add, for example, <code>crispy-delivery-map { --cdm-green: #1f8f45; }</code> to the site's CSS.</div>
+<div class="note">The map already uses The Crispy Bird's brand colour (gold, <code>#c8902a</code>, taken from the ordering site) for buttons and filters, and the site's Montserrat font. Delivery areas stay green, and grass and parks are shown in a darker green. To change a colour, a developer can add, for example, <code>crispy-delivery-map { --cdm-accent: #c8902a; --cdm-grass: #2f6b3a; }</code> to the site's CSS. If a Google Map ID is used, set the grass colour in the Map ID's style in Google Cloud instead.</div>
 
 <h2 id="areas">6. Open and close delivery areas</h2>
 <p>The list of areas is a simple spreadsheet. With a Google Sheet, you or your staff can close or reopen an area in seconds, without touching the website.</p>
