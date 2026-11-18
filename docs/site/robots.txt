@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /afrekenen.html
+Sitemap: https://www.thecrispybird.nl/sitemap.xml

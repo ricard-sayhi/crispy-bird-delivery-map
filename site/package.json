@@ -1,0 +1,16 @@
+{
+  "name": "crispy-bird-site",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "serve": "npx --yes http-server dist -p 8080 -c-1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@iconify-json/tabler": "^1.2.46"
+  },
+  "private": true
+}

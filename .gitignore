@@ -1,3 +1,9 @@
 node_modules
 dist
 *.zip
+site/node_modules
+site/dist
+site/img/dishes
+site/img/*.png
+site/img/*.webp
+!site/img/logo.png
