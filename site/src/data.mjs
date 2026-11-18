@@ -125,6 +125,7 @@ export const PICKUP_MIN = 0;
 // The 5 real reviews, copied verbatim from bestellen.thecrispybird.nl/beoordelingen (Nov 2026).
 // Scores are per category (1-5). `mentions` is only filled where the review itself names a dish.
 // The ordering system does not publish what each reviewer ordered.
+// Add Google reviews by hand with source: 'Google' (Google does not allow exporting them).
 export const REVIEWS = [
   { name: 'Jamie T', date: '2026-11-10', text: 'Restaurant quality, chicken is tender inside and crispy outside. Nashville Hot was our favourite by far.\n\nDelivery was quick too.', scores: { kwaliteit: 5 }, mentions: 'nashville' },
   { name: 'Aravind', date: '2026-11-10', text: 'Good breading, crispy juicy chicken. Love it!\n\nQuite on the expensive side\n\nWhy not sell fired chicken buckets??', scores: { kwaliteit: 5, bezorging: 5 } },

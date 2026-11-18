@@ -63,6 +63,7 @@ button, input, select { font: inherit; color: inherit; }
 .suggest .note { padding: 10px; color: var(--cdm-muted); font-size: 13.5px; }
 
 .lang { height: 48px; min-width: 48px; border-radius: 999px; border: 1.5px solid var(--cdm-line); background: var(--cdm-surface); font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: .04em; }
+.lang[hidden] { display: none; }
 .lang:hover { border-color: var(--cdm-accent); color: var(--cdm-accent-dark); }
 
 /* ---------- Filters ---------- */
@@ -172,6 +173,9 @@ export const globalCss = /* css */ `
 @keyframes cdm-ping { 0% { transform: scale(.4); opacity: .7 } 100% { transform: scale(1.3); opacity: 0 } }
 
 .cdm-gmap .cdm-you { translate: -50% -50%; }
+.cdm-gmap .cdm-store { translate: -50% -100%; display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; }
+.cdm-gmap .cdm-store img { width: 46px; height: 46px; border-radius: 12px; border: 3px solid var(--cdm-ink); box-shadow: 3px 3px 0 var(--cdm-ink); background: #fff; }
+.cdm-gmap .cdm-store span { background: var(--cdm-ink); color: #fff; font: 700 12px/1 inherit; padding: 5px 9px; border-radius: 999px; white-space: nowrap; }
 .cdm-gmap .cdm-pin span { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .cdm-gmap .cdm-you::after { animation: none; } }
 `;

@@ -25,6 +25,8 @@ const icon = (name, cls = 'ic') => {
   return `<svg class="${cls}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">${i.body}</svg>`;
 };
 const byId = Object.fromEntries(MENU.map(m => [m.id, m]));
+const SIZES = JSON.parse(readFileSync(join(ROOT, 'img', 'w', 'sizes.json'), 'utf8'));
+const dim = src => { const [w, h] = SIZES[src.split('/').pop()] || [560, 560]; return `width="${w}" height="${h}"`; };
 const year = 2026;
 
 // ---------------------------------------------------------------- shared chrome
@@ -32,8 +34,6 @@ const NAV = [
   { href: 'index.html', nl: 'Home', en: 'Home' },
   { href: 'menu.html', nl: 'Menu', en: 'Menu' },
   { href: 'deals.html', nl: 'Deals', en: 'Deals' },
-  { href: 'over-ons.html', nl: 'Over ons', en: 'About us' },
-  { href: 'reviews.html', nl: 'Reviews', en: 'Reviews' },
   { href: 'contact.html', nl: 'Contact', en: 'Contact' },
 ];
 
@@ -51,7 +51,6 @@ const header = page => `
         <button type="button" data-mode="delivery" aria-pressed="true">${icon('truck-delivery')}${t('Bezorgen', 'Delivery')}</button>
         <button type="button" data-mode="pickup" aria-pressed="false">${icon('walk')}${t('Afhalen', 'Pickup')}</button>
       </div>
-      <button type="button" class="lang" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands">EN</button>
     </div>
   </div>
 </div>
@@ -82,7 +81,7 @@ const footer = () => `
       <p class="f-trust">${icon('certificate')}${t('100% halal · gratis bezorging', '100% halal · free delivery')}</p>
       <p class="pay-badge" ${ta('aria-label', 'Online betalen met iDEAL of Wero', 'Pay online with iDEAL or Wero')}><span>iDEAL</span><span aria-hidden="true">|</span><span>Wero</span></p>
     </div>
-    <nav ${ta('aria-label', 'Snelle links', 'Quick links')}><h2>${t('Snel naar', 'Quick links')}</h2><ul>${NAV.map(n => `<li><a href="${n.href}">${t(n.nl, n.en)}</a></li>`).join('')}<li><a href="contact.html#bezorging">${t('Bezorging', 'Delivery')}</a></li></ul></nav>
+    <nav ${ta('aria-label', 'Snelle links', 'Quick links')}><h2>${t('Snel naar', 'Quick links')}</h2><ul>${NAV.map(n => `<li><a href="${n.href}">${t(n.nl, n.en)}</a></li>`).join('')}<li><a href="index.html#reviews">Reviews</a></li><li><a href="contact.html#bezorging">${t('Bezorging', 'Delivery')}</a></li></ul></nav>
     <nav ${ta('aria-label', 'Menucategorieën', 'Menu categories')}><h2>Menu</h2><ul>${CATEGORIES.map(c => `<li><a href="menu.html#${c.id}">${t(c.nl, c.en)}</a></li>`).join('')}</ul></nav>
     <div><h2>${t('Bezorggebieden', 'Delivery areas')}</h2><ul class="f-areas">${AREA_GROUPS.map(a => `<li>${t(a.nl.split(':')[0], a.en.split(':')[0])} <span>${t('min.', 'min.')} ${money(a.min)}</span></li>`).join('')}</ul></div>
     <div><h2>${t('Openingstijden', 'Opening hours')}</h2><table class="hours hours-sm"><tbody>${hoursRows()}</tbody></table><p class="f-note">${t('Op zondag en feestdagen kan het iets langer duren.', 'Sundays and public holidays can take a little longer.')}</p></div>
@@ -144,7 +143,9 @@ const itemModal = () => `
 </dialog>`;
 
 const mobileBar = () => `
+<div class="lang-fab"><button type="button" class="lang" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands">${icon('world')}<span data-lang-label>EN</span></button></div>
 <div class="mbar" data-mbar>
+  <button type="button" class="lang lang-mbar" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands">${icon('world')}<span data-lang-label>EN</span></button>
   <a class="btn btn-gold mbar-order" href="menu.html" data-mbar-order>${icon('flame')}${t('Bestel nu', 'Order now')}</a>
   <button type="button" class="mbar-cart" data-cart-open ${ta('aria-label', 'Winkelmand openen', 'Open cart')}>${icon('shopping-bag')}<span data-cart-total>${eur(0)}</span><span class="cart-count" data-cart-count hidden>0</span></button>
 </div>
@@ -231,10 +232,11 @@ ${mobileBar()}
 const tagList = m => m.tags.length ? `<ul class="tags">${m.tags.map(k => `<li title="${esc(TAGS[k].nl)}" data-en-title="${esc(TAGS[k].en)}" class="tag tag-${k}">${icon(TAGS[k].icon)}<span class="sr">${t(TAGS[k].nl, TAGS[k].en)}</span></li>`).join('')}</ul>` : '';
 
 const dishCard = (m, { big = false } = {}) => {
-  const badge = m.promo === 'tenders11' ? '<span class="badge">1+1</span>' : m.was ? `<span class="badge">-${Math.round((1 - m.price / m.was) * 100)}%</span>` : '';
+  const badgeTxt = m.promo === 'tenders11' ? '1+1' : m.was ? `-${Math.round((1 - m.price / m.was) * 100)}%` : '';
+  const badge = badgeTxt ? `<span class="badge"><span>${badgeTxt}</span></span>` : '';
   const name = m.name + (m.size ? ` <span class="size">${m.size}</span>` : '');
   return `<article class="dish${big ? ' dish-big' : ''}" data-reveal>
-  <div class="dish-media">${badge}<img src="${m.img}" alt="${esc(m.name)}: ${esc(m.desc.nl)}" data-en-alt="${esc(m.name)}: ${esc(m.desc.en)}" width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media">${badge}<img src="${m.img}" alt="${esc(m.name)}: ${esc(m.desc.nl)}" data-en-alt="${esc(m.name)}: ${esc(m.desc.en)}" ${dim(m.img)} loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>${name}</h3>
     <p>${t(m.desc.nl, m.desc.en)}</p>
@@ -272,10 +274,11 @@ const stars = (n, label = true) => `<span class="stars"${label ? ' role="img"' :
 
 const fmtDate = (iso, lang) => new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(iso + 'T12:00:00'));
 
-const reviewCard = r => `<article class="review" data-reveal>
+const reviewCard = r => `<article class="review">
   <header><p class="r-name">${esc(r.name)}</p><p class="r-date"><time datetime="${r.date}">${t(fmtDate(r.date, 'nl'), fmtDate(r.date, 'en'))}</time></p></header>
   <blockquote>${esc(r.text).replace(/\n\n/g, '<br><br>')}</blockquote>
   <dl class="r-scores">${Object.entries(r.scores).map(([k, v]) => `<div><dt>${k === 'kwaliteit' ? t('Kwaliteit', 'Quality') : t('Bezorging', 'Delivery')}</dt><dd>${stars(v)}</dd></div>`).join('')}</dl>
+  <p class="r-src">${r.source === 'Google' ? 'Via Google' : t('Via bestelsysteem', 'Via ordering system')}</p>
   ${r.mentions ? `<p class="r-ordered">${t('Noemt', 'Mentions')}: <a href="menu.html#burgers">${byId[r.mentions].name}</a></p>` : ''}
 </article>`;
 
@@ -306,9 +309,9 @@ pages['index.html'] = {
       </div>
     </div>
     <div class="hero-art" aria-hidden="false">
-      <div class="plate"><img src="img/6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp" width="529" height="450" alt="Classic Chicken Burger met krokante kippendij op een houten plank" data-en-alt="Classic Chicken Burger with crispy chicken thigh on a wooden board" fetchpriority="high"></div>
+      <div class="plate"><img src="img/6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp" ${dim('6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp')} alt="Classic Chicken Burger met krokante kippendij op een houten plank" data-en-alt="Classic Chicken Burger with crispy chicken thigh on a wooden board" fetchpriority="high"></div>
       <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text textLength="488" lengthAdjust="spacing"><textPath href="#circ" textLength="488" lengthAdjust="spacing">100% HALAL · 100% KIPPENDIJ · 2× GEFRITUURD · </textPath></text><image href="img/w/logo-line.png" x="72" y="56" width="58" height="84"/></svg>
-      <a class="price-tag" href="menu.html#burgers"><span>Classic</span><strong>${money(9.99)}</strong></a>
+      <a class="price-tag" href="menu.html#burgers" ${ta('aria-label', 'Classic Chicken Burger, €9,99', 'Classic Chicken Burger, €9.99')}><span class="pt-name">Classic</span><strong class="pt-price">${money(9.99)}</strong></a>
     </div>
   </div>
 </section>
@@ -337,22 +340,30 @@ pages['index.html'] = {
   <div class="wrap">
     <h2>${t('Zo simpel is het', "It's that simple")}</h2>
     <ol class="steps">
-      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="img/7465ef9251ed03559889c0296b034e7b.webp" width="280" height="280" alt="" loading="lazy"></div><h3>${t('Kies je bird', 'Pick your bird')}</h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p></li>
+      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="img/7465ef9251ed03559889c0296b034e7b.webp" ${dim('7465ef9251ed03559889c0296b034e7b.webp')} alt="" loading="lazy"></div><h3>${t('Kies je bird', 'Pick your bird')}</h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p></li>
       <li data-reveal><span class="step-n">2</span><div class="step-art step-pay"><span>iDEAL</span><span>Wero</span></div><h3>${t('Bestel & betaal met iDEAL', 'Order & pay with iDEAL')}</h3><p>${t('Of met Wero. Online, in een paar tikken.', 'Or with Wero. Online, in a few taps.')}</p></li>
       <li data-reveal><span class="step-n">3</span><div class="step-art step-door">${icon('truck-delivery', 'ic ic-xl')}</div><h3>${t('Crispy aan de deur', 'Crispy at your door')}</h3><p>${t('Gratis bezorgd. Of haal hem zelf op aan de Kruyderlaan.', 'Free delivery. Or pick it up yourself on Kruyderlaan.')}</p></li>
     </ol>
   </div>
 </section>
 
-<section class="sec">
-  <div class="wrap reviews-preview">
-    <div>
-      <p class="kicker">Reviews</p>
-      <h2>${t('Wat bestellers zeggen', 'What customers say')}</h2>
+<section class="sec reviews-sec" id="reviews" aria-labelledby="rev-h">
+  <div class="wrap">
+    <header class="sec-head rev-head">
+      <div><p class="kicker">Reviews</p><h2 id="rev-h">${t('Wat bestellers zeggen', 'What customers say')}</h2></div>
       ${ratingBadge()}
-      <a class="btn btn-black" href="reviews.html">${t('Lees alle reviews', 'Read all reviews')}</a>
+    </header>
+    <div class="carousel" data-carousel>
+      <ul class="rv-track" data-track tabindex="0" ${ta('aria-label', 'Reviews, scroll horizontaal', 'Reviews, scroll sideways')}>${REVIEWS.map(r => `<li>${reviewCard(r)}</li>`).join('')}</ul>
+      <div class="rv-controls">
+        <p class="fine">${t('Echte reviews van klanten, ongewijzigd.', 'Real customer reviews, unedited.')} ${t('Na elke bestelling krijg je een uitnodiging per e-mail.', 'After every order you get an e-mail invitation.')}</p>
+        <div class="rv-btns">
+          <a class="btn btn-gold" href="${BRAND.orderSystem}beoordelingen" rel="noopener">${icon('star')}${t('Laat een review achter', 'Leave a review')}</a>
+          <button type="button" class="round-btn" data-prev ${ta('aria-label', 'Vorige reviews', 'Previous reviews')}>${icon('arrow-right', 'ic flip')}</button>
+          <button type="button" class="round-btn" data-next-rv ${ta('aria-label', 'Volgende reviews', 'Next reviews')}>${icon('arrow-right')}</button>
+        </div>
+      </div>
     </div>
-    <div class="review-pair">${REVIEWS.slice(0, 2).map(reviewCard).join('')}</div>
   </div>
 </section>
 
@@ -368,13 +379,12 @@ pages['index.html'] = {
 function dealCard(d) {
   const m = byId[d.item];
   return `<article class="deal" data-reveal>
-    <span class="deal-badge">${t(d.badge.nl, d.badge.en)}</span>
-    <img src="${d.img}" alt="" width="540" height="289" loading="lazy">
+    <div class="deal-media"><span class="deal-badge"><span>${t(d.badge.nl, d.badge.en)}</span></span><img src="${d.img}" alt="" ${dim(d.img)} loading="lazy"></div>
     <div class="deal-body">
-      <p class="deal-exp" data-expires="${d.expires || ''}">${icon('clock')}${d.expires ? '' : t('Zolang de actie loopt', 'While the deal lasts')}</p>
+      <p class="deal-exp" data-expires="${d.expires || ''}">${icon('clock')}<span>${d.expires ? '' : t('Tijdelijk', 'Limited time')}</span></p>
       <h3>${t(d.title.nl, d.title.en)}</h3>
-      <p>${t(d.body.nl, d.body.en)}</p>
-      <button type="button" class="btn btn-black" data-add="${m.id}">${icon('plus')}${t('Voeg toe', 'Add')}</button>
+      <p class="deal-text">${t(d.body.nl, d.body.en)}</p>
+      <button type="button" class="btn btn-gold" data-add="${m.id}">${icon('plus')}${t('Voeg toe', 'Add')}</button>
     </div>
   </article>`;
 }
@@ -383,7 +393,7 @@ pages['menu.html'] = {
   title: 'Menu · The Crispy Bird Nieuwegein',
   description: 'Bekijk het menu van The Crispy Bird: crispy chicken burgers, tenders, combo deals, sides, dips en drankjes. Bestel online en betaal met iDEAL of Wero.',
   ld: restaurantLd(true),
-  bodyClass: 'menu-page',
+  bodyClass: 'menu-page dark',
   body: `
 ${pageHead(t('Vers gefrituurd, elke bestelling', 'Fried fresh, every order'), 'Menu', t('Alles 100% halal. Combo’s nu 20% goedkoper en Tenders 1+1.', 'Everything 100% halal. Combos 20% off and Tenders 1+1.'))}
 <nav class="tabs" data-tabs ${ta('aria-label', 'Menucategorieën', 'Menu categories')}>
@@ -405,6 +415,7 @@ ${pageHead(t('Vers gefrituurd, elke bestelling', 'Fried fresh, every order'), 'M
 
 pages['deals.html'] = {
   title: 'Deals · The Crispy Bird',
+  bodyClass: 'dark',
   description: "Actuele deals bij The Crispy Bird: 20% korting op combo's en 1+1 Chicken Tenders met gratis dipsaus. Meld je aan voor exclusieve kortingen.",
   ld: restaurantLd(),
   body: `
@@ -438,119 +449,41 @@ ${pageHead(t('Meer crunch voor minder', 'More crunch for less'), 'Deals', t('De 
 </section>`,
 };
 
-pages['over-ons.html'] = {
-  title: 'Over ons · The Crispy Bird',
-  description: 'Waarom onze chicken zo crispy is: 100% halal kippendij, 24 uur in karnemelk, met de hand gepaneerd en twee keer gefrituurd. Uit de keuken aan de Kruyderlaan in Nieuwegein.',
-  ld: restaurantLd(),
-  body: `
-${pageHead(t('Over ons', 'About us'), t('Geobsedeerd door crunch.', 'Obsessed with crunch.'), t('Eén vraag in onze keuken: hoor je hem kraken?', 'One question in our kitchen: can you hear it crack?'))}
-<div class="draft-note wrap" role="note">${icon('info-circle')}<span>${t('Concepttekst. De eigenaar bevestigt dit verhaal nog.', 'Draft copy. The owner still needs to confirm this story.')}</span></div>
-<section class="story">
-  <div class="wrap story-row" data-reveal>
-    <div class="story-img"><img src="img/bc3a0ea7fdaf03535be37d36d9fa84c7.webp" width="280" height="280" alt="Handgepaneerde chicken tenders met dip" data-en-alt="Hand-breaded chicken tenders with a dip" loading="lazy"></div>
-    <div class="story-copy"><p class="story-n">24u</p><h2>${t('Een nacht in karnemelk', 'A night in buttermilk')}</h2><p>${t('Elk stuk kippendij gaat 24 uur de karnemelk in, met onze eigen kruiden. Dat maakt het vlees mals en sappig, en geeft de panering iets om zich aan vast te houden.', 'Every piece of chicken thigh spends 24 hours in buttermilk with our own spice mix. It keeps the meat tender and juicy, and gives the breading something to grip.')}</p></div>
-  </div>
-  <div class="wrap story-row story-flip" data-reveal>
-    <div class="story-img"><img src="img/f305e500d35f45c34abaf0218abaf1fe.webp" width="280" height="280" alt="Nashville Hot Chicken Burger met krokante panering" data-en-alt="Nashville Hot Chicken Burger with a crunchy coating" loading="lazy"></div>
-    <div class="story-copy"><p class="story-n">2×</p><h2>${t('Twee keer de frituur in', 'Into the fryer twice')}</h2><p>${t('Eerst op lage temperatuur zodat hij gaar wordt, dan nog een keer heet voor de crunch. Daarom is hij bij jou thuis nog steeds crispy.', 'First at a lower temperature to cook it through, then once more, hot, for the crunch. That is why it is still crispy when it reaches you.')}</p></div>
-  </div>
-  <div class="wrap story-row" data-reveal>
-    <div class="story-img"><img src="img/6ae4cc4f03e77_Crispy_Chicken_Burgers_on_Wooden_Board.webp" width="675" height="450" alt="Twee crispy chicken burgers op een plank" data-en-alt="Two crispy chicken burgers on a board" loading="lazy"></div>
-    <div class="story-copy"><p class="story-n">100%</p><h2>${t('Halal kippendij, niks anders', 'Halal chicken thigh, nothing else')}</h2><p>${t('We gebruiken alleen kippendij: meer smaak dan filet en hij droogt niet uit. Al onze kip is 100% halal. Groenten, sauzen en brioche halen we vers binnen.', 'We only use chicken thigh: more flavour than breast and it does not dry out. All our chicken is 100% halal. Vegetables, sauces and brioche come in fresh.')}</p></div>
-  </div>
-</section>
-<section class="sec sec-black">
-  <div class="wrap">
-    <h2>${t('Uit onze keuken', 'From our kitchen')}</h2>
-    <div class="photo-slots">
-      <figure class="slot">${icon('building-store', 'ic ic-xl')}<figcaption>${t('Foto volgt: de keuken aan de Kruyderlaan', 'Photo coming: the kitchen on Kruyderlaan')}</figcaption></figure>
-      <figure class="slot">${icon('flame', 'ic ic-xl')}<figcaption>${t('Foto volgt: paneren en frituren', 'Photo coming: breading and frying')}</figcaption></figure>
-      <figure class="slot slot-img"><img src="img/banner.webp" width="889" height="667" alt="Een tafel vol burgers, friet en dips van The Crispy Bird" data-en-alt="A table full of Crispy Bird burgers, fries and dips" loading="lazy"></figure>
-    </div>
-  </div>
-</section>
-<section class="final-cta"><div class="wrap final-in"><h2>${t('Proef het verschil.', 'Taste the difference.')}</h2><a class="btn btn-gold btn-lg" href="menu.html">${t('Bestel nu', 'Order now')} ${icon('arrow-right')}</a></div></section>`,
-};
-
-pages['reviews.html'] = {
-  title: 'Reviews · The Crispy Bird',
-  description: 'Lees wat klanten van The Crispy Bird zeggen. Gemiddeld 4 sterren op basis van 5 reviews.',
-  ld: restaurantLd(),
-  body: `
-${pageHead('Reviews', t('Eerlijk gezegd.', 'Honestly speaking.'), t('Alle reviews, ook de minder goede. Daar leren we van.', 'Every review, including the less good ones. That is how we learn.'))}
-<section class="sec">
-  <div class="wrap">
-    <div class="rev-summary" data-reveal>
-      ${ratingBadge()}
-      <div class="rev-invite">
-        <p>${t('Na elke bestelling krijg je een uitnodiging per e-mail om een review te schrijven.', 'After every order you get an e-mail invitation to write a review.')}</p>
-        <a class="btn btn-gold" href="${BRAND.orderSystem}beoordelingen" rel="noopener">${icon('star')}${t('Laat een review achter', 'Leave a review')}</a>
-      </div>
-    </div>
-    <div class="review-grid">${REVIEWS.map(reviewCard).join('')}</div>
-    <p class="fine">${t('Reviews uit ons bestelsysteem, ongewijzigd overgenomen.', 'Reviews from our ordering system, copied unchanged.')}</p>
-  </div>
-</section>`,
-};
-
 pages['contact.html'] = {
   title: 'Contact & bezorging · The Crispy Bird',
-  description: 'The Crispy Bird, Kruyderlaan 3a, 3431 BM Nieuwegein. Bel +31 6 26469115. Gratis bezorging in Nieuwegein, IJsselstein, Utrecht-Zuid en Vianen. Check je postcode.',
+  description: 'The Crispy Bird, Kruyderlaan 3a, 3431 BM Nieuwegein. Bel +31 6 26469115. Gratis bezorging in Nieuwegein, IJsselstein, Utrecht-Zuid en Vianen. Check je adres op de kaart.',
   ld: restaurantLd(),
+  bodyClass: 'contact-page',
   body: `
-${pageHead('Contact', t('Kom langs of bel even.', 'Drop by or give us a call.'))}
-<section class="sec">
-  <div class="wrap contact-grid">
-    <div class="contact-card" data-reveal>
-      <h2>${t('Adres', 'Address')}</h2>
-      <address>${BRAND.street}<br>${BRAND.postcode} ${BRAND.city}</address>
-      <a class="btn btn-gold btn-block" href="${BRAND.phoneHref}">${icon('phone')}${BRAND.phone}</a>
-      <a class="link-arrow" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${BRAND.street}, ${BRAND.postcode} ${BRAND.city}`)}" rel="noopener">${t('Route plannen', 'Get directions')} ${icon('arrow-right')}</a>
-      <h3>${t('Afhalen', 'Pickup')}</h3>
-      <p>${t('Kies bij het bestellen “Afhalen” en een tijdstip. Je bestelling staat dan klaar op de Kruyderlaan 3a.', 'Choose “Pickup” and a time when you order. Your order will be ready at Kruyderlaan 3a.')}</p>
-    </div>
-    <div class="map-embed" data-reveal>
-      <iframe title="Kaart: The Crispy Bird, Kruyderlaan 3a Nieuwegein" data-en-title="Map: The Crispy Bird, Kruyderlaan 3a Nieuwegein" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${encodeURIComponent(`The Crispy Bird, ${BRAND.street}, ${BRAND.postcode} ${BRAND.city}`)}&z=15&output=embed"></iframe>
-    </div>
-    <div class="contact-card" data-reveal>
-      <h2>${t('Open & bezorging', 'Open & delivery')}</h2>
-      <table class="hours"><tbody>${hoursRows()}</tbody></table>
-      <p class="fine">${t('Bezorg- en openingstijden zijn gelijk. Op zondag en feestdagen kan het iets langer duren.', 'Delivery and opening hours are the same. Sundays and public holidays can take a little longer.')}</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec sec-cream" id="bezorging">
+${pageHead(t('Contact & bezorging', 'Contact & delivery'), t('Bezorgen we bij jou?', 'Do we deliver to you?'), t('Zoek je adres op de kaart. Bezorgen is overal gratis, het minimum verschilt per wijk.', 'Find your address on the map. Delivery is free everywhere; the minimum differs per area.'))}
+<section class="hub-sec" id="bezorging">
   <div class="wrap">
-    <header class="sec-head"><div><p class="kicker">${t('Bezorging', 'Delivery')}</p><h2>${t('Gratis bezorgd. Minimum per wijk.', 'Free delivery. Minimum per area.')}</h2></div></header>
-    <div class="delivery-grid">
-      <div>
-        ${postcodeForm('pc-contact')}
-        <table class="areas">
-          <thead><tr><th scope="col">${t('Gebied', 'Area')}</th><th scope="col">${t('Postcodes', 'Postcodes')}</th><th scope="col">${t('Minimum', 'Minimum')}</th></tr></thead>
-          <tbody>${AREA_GROUPS.map(a => `<tr><th scope="row">${t(a.nl, a.en)}</th><td>${a.codes.length > 4 ? `${a.codes[0]}–${a.codes.at(-1)}` : a.codes.join(', ')}</td><td>${money(a.min)}</td></tr>`).join('')}
-          ${LOCKED_AREAS.map(a => `<tr class="locked"><th scope="row">${icon('lock')}${t(a.nl, a.en)}</th><td>${a.code}</td><td>${t('Tijdelijk niet', 'Paused for now')}</td></tr>`).join('')}</tbody>
-        </table>
+    <div class="hub">
+      <div class="hub-map">
+        <crispy-delivery-map lang="nl" order-url="menu.html" store="${BRAND.geo.lat},${BRAND.geo.lng}" store-label="The Crispy Bird" store-icon="img/logo-192.png" hide-lang${BRAND.googleMapsKey ? ` google-maps-key="${esc(BRAND.googleMapsKey)}"` : ''}></crispy-delivery-map>
       </div>
-      <div class="dmap">
-        <crispy-delivery-map lang="nl" order-url="menu.html"${BRAND.googleMapsKey ? ` google-maps-key="${esc(BRAND.googleMapsKey)}"` : ''}></crispy-delivery-map>
-      </div>
+      <aside class="hub-side" ${ta('aria-label', 'Contactgegevens', 'Contact details')}>
+        <section class="hub-block">
+          <h2>${t('Hier zitten we', 'Find us here')}</h2>
+          <address>${BRAND.street}<br>${BRAND.postcode} ${BRAND.city}</address>
+          <div class="hub-actions">
+            <a class="btn btn-gold" href="${BRAND.phoneHref}">${icon('phone')}${BRAND.phone}</a>
+            <a class="btn btn-line" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${BRAND.street}, ${BRAND.postcode} ${BRAND.city}`)}" rel="noopener">${icon('route')}${t('Route', 'Directions')}</a>
+          </div>
+          <p class="hub-note">${icon('walk')}<span>${t('Afhalen? Kies “Afhalen” en een tijd bij het bestellen. Je bestelling staat klaar op de Kruyderlaan 3a.', 'Picking up? Choose “Pickup” and a time when you order. Your order will be ready at Kruyderlaan 3a.')}</span></p>
+        </section>
+        <section class="hub-block">
+          <h2>${t('Open & bezorging', 'Open & delivery')}</h2>
+          <table class="hours"><tbody>${hoursRows()}</tbody></table>
+          <p class="fine">${t('Op zondag en feestdagen kan het iets langer duren.', 'Sundays and public holidays can take a little longer.')}</p>
+        </section>
+        <section class="hub-block">
+          <h2>${t('Minimum per wijk', 'Minimum per area')}</h2>
+          <ul class="mins">${AREA_GROUPS.map(a => `<li><span>${t(a.nl, a.en)}<small>${a.codes.length > 4 ? `${a.codes[0]}–${a.codes.at(-1)}` : a.codes.join(', ')}</small></span><strong>${money(a.min)}</strong></li>`).join('')}
+          ${LOCKED_AREAS.map(a => `<li class="locked"><span>${icon('lock')}${t(a.nl, a.en)}<small>${a.code}</small></span><strong>${t('Tijdelijk niet', 'Paused')}</strong></li>`).join('')}</ul>
+        </section>
+      </aside>
     </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap two-col">
-    <div><h2>${t('Stuur ons een bericht', 'Send us a message')}</h2><p>${t('Vraag over je bestelling? Zet je bestelnummer erbij, dan helpen we je sneller. Spoed? Bel ons gewoon.', 'Question about your order? Add your order number so we can help faster. Urgent? Just call us.')}</p></div>
-    <form class="contact-form" data-contact-form novalidate>
-      <div class="field"><label for="cf-name">${t('Naam', 'Name')}</label><input id="cf-name" name="name" autocomplete="name" required></div>
-      <div class="field"><label for="cf-email">${t('E-mail', 'E-mail')}</label><input id="cf-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="cf-phone">${t('Telefoon', 'Phone')}</label><input id="cf-phone" name="phone" type="tel" autocomplete="tel"></div>
-      <div class="field"><label for="cf-order">${t('Bestelnummer (optioneel)', 'Order number (optional)')}</label><input id="cf-order" name="order" inputmode="numeric"></div>
-      <div class="field field-wide"><label for="cf-msg">${t('Bericht', 'Message')}</label><textarea id="cf-msg" name="message" rows="5" required></textarea></div>
-      <button type="submit" class="btn btn-black">${t('Versturen', 'Send')}</button>
-      <p class="form-msg" data-form-msg aria-live="polite"></p>
-    </form>
   </div>
 </section>
 <script src="assets/map/crispy-delivery-map.js" defer></script>`,

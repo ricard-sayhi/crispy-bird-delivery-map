@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="assets/app.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"The Crispy Bird","url":"https://www.thecrispybird.nl/","image":"https://www.thecrispybird.nl/img/banner.webp","logo":"https://www.thecrispybird.nl/img/logo-512.png","telephone":"+31 6 26469115","servesCuisine":["Fried chicken","Burgers","Halal"],"priceRange":"€€","address":{"@type":"PostalAddress","streetAddress":"Kruyderlaan 3a","postalCode":"3431 BM","addressLocality":"Nieuwegein","addressCountry":"NL"},"geo":{"@type":"GeoCoordinates","latitude":52.03224,"longitude":5.08812},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"https://schema.org/Monday","opens":"16:00","closes":"21:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"https://schema.org/Thursday","opens":"16:00","closes":"21:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"https://schema.org/Friday","opens":"16:00","closes":"21:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"https://schema.org/Saturday","opens":"16:00","closes":"21:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"https://schema.org/Sunday","opens":"16:00","closes":"21:30"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":4,"reviewCount":5,"bestRating":5},"acceptsReservations":false,"hasMenu":"https://www.thecrispybird.nl/menu.html"}</script>
 </head>
-<body class="">
+<body class="dark">
 
 <a class="skip" href="#main"><span data-en="Skip to content">Naar de inhoud</span></a>
 <div class="topbar">
@@ -35,7 +35,6 @@
         <button type="button" data-mode="delivery" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0m10 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M5 17H3v-4M2 5h11v12m-4 0h6m4 0h2v-6h-8m0-5h5l3 5M3 9h4"/></g></svg><span data-en="Delivery">Bezorgen</span></button>
         <button type="button" data-mode="pickup" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0-2 0M7 21l3-4m6 4l-2-4l-3-3l1-6"/><path d="m6 12l2-3l4-1l3 3l3 1"/></g></svg><span data-en="Pickup">Afhalen</span></button>
       </div>
-      <button type="button" class="lang" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands">EN</button>
     </div>
   </div>
 </div>
@@ -45,7 +44,7 @@
   <img src="img/logo-192.png" width="44" height="44" alt="">
   <span class="brand-word">The Crispy Bird</span></a>
     <nav class="nav" id="nav" aria-label="Hoofdmenu" data-en-aria-label="Main menu">
-      <ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="deals.html" aria-current="page">Deals</a></li><li><a href="over-ons.html"><span data-en="About us">Over ons</span></a></li><li><a href="reviews.html">Reviews</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="deals.html" aria-current="page">Deals</a></li><li><a href="contact.html">Contact</a></li></ul>
     </nav>
     <div class="header-actions">
       <button type="button" class="cart-btn" data-cart-open aria-label="Winkelmand openen" data-en-aria-label="Open cart">
@@ -70,27 +69,25 @@
 <section class="sec">
   <div class="wrap">
     <div class="deal-grid deal-grid-page"><article class="deal" data-reveal>
-    <span class="deal-badge">-20%</span>
-    <img src="img/deal-combo.webp" alt="" width="540" height="289" loading="lazy">
+    <div class="deal-media"><span class="deal-badge"><span>-20%</span></span><img src="img/deal-combo.webp" alt="" width="540" height="289" loading="lazy"></div>
     <div class="deal-body">
-      <p class="deal-exp" data-expires=""><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g></svg><span data-en="While the deal lasts">Zolang de actie loopt</span></p>
+      <p class="deal-exp" data-expires=""><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g></svg><span><span data-en="Limited time">Tijdelijk</span></span></p>
       <h3><span data-en="20% off all combos">20% korting op combo's</span></h3>
-      <p><span data-en="Every Meal Deal, the Kids Meal and Everything: the discount is already in the price.">Alle Meal Deals, de Kids Meal en Everything: de korting zit al in de prijs.</span></p>
-      <button type="button" class="btn btn-black" data-add="meal-deal"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg><span data-en="Add">Voeg toe</span></button>
+      <p class="deal-text"><span data-en="Every Meal Deal, the Kids Meal and Everything: the discount is already in the price.">Alle Meal Deals, de Kids Meal en Everything: de korting zit al in de prijs.</span></p>
+      <button type="button" class="btn btn-gold" data-add="meal-deal"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg><span data-en="Add">Voeg toe</span></button>
     </div>
   </article><article class="deal" data-reveal>
-    <span class="deal-badge">1+1</span>
-    <img src="img/deal-tenders.webp" alt="" width="540" height="289" loading="lazy">
+    <div class="deal-media"><span class="deal-badge"><span>1+1</span></span><img src="img/deal-tenders.webp" alt="" width="465" height="289" loading="lazy"></div>
     <div class="deal-body">
-      <p class="deal-exp" data-expires=""><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g></svg><span data-en="While the deal lasts">Zolang de actie loopt</span></p>
+      <p class="deal-exp" data-expires=""><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g></svg><span><span data-en="Limited time">Tijdelijk</span></span></p>
       <h3><span data-en="Tenders 1+1">1+1 Tenders</span></h3>
-      <p><span data-en="Order Chicken Tenders, get a second portion free. Free dip included.">Bestel Chicken Tenders, krijg er nog een portie bij. Inclusief gratis dipsaus.</span></p>
-      <button type="button" class="btn btn-black" data-add="tenders"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg><span data-en="Add">Voeg toe</span></button>
+      <p class="deal-text"><span data-en="Order Chicken Tenders, get a second portion free. Free dip included.">Bestel Chicken Tenders, krijg er nog een portie bij. Inclusief gratis dipsaus.</span></p>
+      <button type="button" class="btn btn-gold" data-add="tenders"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg><span data-en="Add">Voeg toe</span></button>
     </div>
   </article></div>
     <h2 class="sub-h"><span data-en="Combos on offer">Combo’s in de aanbieding</span></h2>
     <div class="dish-grid"><article class="dish" data-reveal>
-  <div class="dish-media"><span class="badge">-20%</span><img src="img/8f0d4951a35342c7dcb7b1e5a3eb6b8f.webp" alt="Meal Deal Small: Burger naar keuze, friet en een dip." data-en-alt="Meal Deal Small: Burger of your choice, fries and a dip." width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media"><span class="badge"><span>-20%</span></span><img src="img/8f0d4951a35342c7dcb7b1e5a3eb6b8f.webp" alt="Meal Deal Small: Burger naar keuze, friet en een dip." data-en-alt="Meal Deal Small: Burger of your choice, fries and a dip." width="560" height="560" loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>Meal Deal Small</h3>
     <p><span data-en="Burger of your choice, fries and a dip.">Burger naar keuze, friet en een dip.</span></p>
@@ -101,7 +98,7 @@
     </div>
   </div>
 </article><article class="dish" data-reveal>
-  <div class="dish-media"><span class="badge">-20%</span><img src="img/6ae4966bb4de8_Crispy_Chicken_Burger_Feast.webp" alt="Meal Deal: Burger naar keuze, friet, drankje en een dip." data-en-alt="Meal Deal: Burger of your choice, fries, a drink and a dip." width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media"><span class="badge"><span>-20%</span></span><img src="img/6ae4966bb4de8_Crispy_Chicken_Burger_Feast.webp" alt="Meal Deal: Burger naar keuze, friet, drankje en een dip." data-en-alt="Meal Deal: Burger of your choice, fries, a drink and a dip." width="601" height="450" loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>Meal Deal</h3>
     <p><span data-en="Burger of your choice, fries, a drink and a dip.">Burger naar keuze, friet, drankje en een dip.</span></p>
@@ -112,7 +109,7 @@
     </div>
   </div>
 </article><article class="dish" data-reveal>
-  <div class="dish-media"><span class="badge">-20%</span><img src="img/c45aa3e26025cacff5007df127b9c050.webp" alt="Meal Deal XL: Burger, 4 tenders, coleslaw, friet, drankje en een gratis dip." data-en-alt="Meal Deal XL: Burger, 4 tenders, coleslaw, fries, a drink and a free dip." width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media"><span class="badge"><span>-20%</span></span><img src="img/c45aa3e26025cacff5007df127b9c050.webp" alt="Meal Deal XL: Burger, 4 tenders, coleslaw, friet, drankje en een gratis dip." data-en-alt="Meal Deal XL: Burger, 4 tenders, coleslaw, fries, a drink and a free dip." width="560" height="560" loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>Meal Deal XL</h3>
     <p><span data-en="Burger, 4 tenders, coleslaw, fries, a drink and a free dip.">Burger, 4 tenders, coleslaw, friet, drankje en een gratis dip.</span></p>
@@ -123,7 +120,7 @@
     </div>
   </div>
 </article><article class="dish" data-reveal>
-  <div class="dish-media"><span class="badge">-20%</span><img src="img/ba997706caeeea7e47afbbab7df490fc.webp" alt="Everything: Alle 4 burgers, 8 tenders, 2x coleslaw, 3x friet, 4 drankjes, alle dips en 2 brownies." data-en-alt="Everything: All 4 burgers, 8 tenders, 2x coleslaw, 3x fries, 4 drinks, every dip and 2 brownies." width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media"><span class="badge"><span>-20%</span></span><img src="img/ba997706caeeea7e47afbbab7df490fc.webp" alt="Everything: Alle 4 burgers, 8 tenders, 2x coleslaw, 3x friet, 4 drankjes, alle dips en 2 brownies." data-en-alt="Everything: All 4 burgers, 8 tenders, 2x coleslaw, 3x fries, 4 drinks, every dip and 2 brownies." width="560" height="560" loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>Everything</h3>
     <p><span data-en="All 4 burgers, 8 tenders, 2x coleslaw, 3x fries, 4 drinks, every dip and 2 brownies.">Alle 4 burgers, 8 tenders, 2x coleslaw, 3x friet, 4 drankjes, alle dips en 2 brownies.</span></p>
@@ -134,7 +131,7 @@
     </div>
   </div>
 </article><article class="dish" data-reveal>
-  <div class="dish-media"><span class="badge">-20%</span><img src="img/2e79d519ec4dbd2a830d672ea21965e0.webp" alt="Kids Meal: 3 tenders, friet, een dip en appelsap." data-en-alt="Kids Meal: 3 tenders, fries, a dip and apple juice." width="280" height="280" loading="lazy" decoding="async"></div>
+  <div class="dish-media"><span class="badge"><span>-20%</span></span><img src="img/2e79d519ec4dbd2a830d672ea21965e0.webp" alt="Kids Meal: 3 tenders, friet, een dip en appelsap." data-en-alt="Kids Meal: 3 tenders, fries, a dip and apple juice." width="560" height="560" loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>Kids Meal</h3>
     <p><span data-en="3 tenders, fries, a dip and apple juice.">3 tenders, friet, een dip en appelsap.</span></p>
@@ -177,7 +174,7 @@
       <p class="f-trust"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 15a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/><path d="M13 17.5V22l2-1.5l2 1.5v-4.5"/><path d="M10 19H5a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-1 1.73M6 9h12M6 12h3m-3 3h2"/></g></svg><span data-en="100% halal · free delivery">100% halal · gratis bezorging</span></p>
       <p class="pay-badge" aria-label="Online betalen met iDEAL of Wero" data-en-aria-label="Pay online with iDEAL or Wero"><span>iDEAL</span><span aria-hidden="true">|</span><span>Wero</span></p>
     </div>
-    <nav aria-label="Snelle links" data-en-aria-label="Quick links"><h2><span data-en="Quick links">Snel naar</span></h2><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="deals.html">Deals</a></li><li><a href="over-ons.html"><span data-en="About us">Over ons</span></a></li><li><a href="reviews.html">Reviews</a></li><li><a href="contact.html">Contact</a></li><li><a href="contact.html#bezorging"><span data-en="Delivery">Bezorging</span></a></li></ul></nav>
+    <nav aria-label="Snelle links" data-en-aria-label="Quick links"><h2><span data-en="Quick links">Snel naar</span></h2><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="deals.html">Deals</a></li><li><a href="contact.html">Contact</a></li><li><a href="index.html#reviews">Reviews</a></li><li><a href="contact.html#bezorging"><span data-en="Delivery">Bezorging</span></a></li></ul></nav>
     <nav aria-label="Menucategorieën" data-en-aria-label="Menu categories"><h2>Menu</h2><ul><li><a href="menu.html#combos">Combos</a></li><li><a href="menu.html#burgers">Burgers</a></li><li><a href="menu.html#sides">Sides</a></li><li><a href="menu.html#dips">Dips</a></li><li><a href="menu.html#kids">Kids Menu</a></li><li><a href="menu.html#desserts">Desserts</a></li><li><a href="menu.html#drinks"><span data-en="Drinks">Drankjes</span></a></li><li><a href="menu.html#team">Team Combos</a></li></ul></nav>
     <div><h2><span data-en="Delivery areas">Bezorggebieden</span></h2><ul class="f-areas"><li>Nieuwegein <span>min. <span class="money" data-v="17.5">€17,50</span></span></li><li>IJsselstein <span>min. <span class="money" data-v="25">€25,00</span></span></li><li>Utrecht <span>min. <span class="money" data-v="25">€25,00</span></span></li><li>Utrecht <span>min. <span class="money" data-v="30">€30,00</span></span></li><li>Vianen <span>min. <span class="money" data-v="35">€35,00</span></span></li></ul></div>
     <div><h2><span data-en="Opening hours">Openingstijden</span></h2><table class="hours hours-sm"><tbody><tr data-day="1"><th scope="row"><span data-en="Monday">Maandag</span></th><td>16:00–21:30</td></tr><tr data-day="2"><th scope="row"><span data-en="Tuesday">Dinsdag</span></th><td><span data-en="Closed">Gesloten</span></td></tr><tr data-day="3"><th scope="row"><span data-en="Wednesday">Woensdag</span></th><td><span data-en="Closed">Gesloten</span></td></tr><tr data-day="4"><th scope="row"><span data-en="Thursday">Donderdag</span></th><td>16:00–21:30</td></tr><tr data-day="5"><th scope="row"><span data-en="Friday">Vrijdag</span></th><td>16:00–21:30</td></tr><tr data-day="6"><th scope="row"><span data-en="Saturday">Zaterdag</span></th><td>16:00–21:30</td></tr><tr data-day="0"><th scope="row"><span data-en="Sunday">Zondag</span></th><td>16:00–21:30</td></tr></tbody></table><p class="f-note"><span data-en="Sundays and public holidays can take a little longer.">Op zondag en feestdagen kan het iets langer duren.</span></p></div>
@@ -236,7 +233,9 @@
   </form>
 </dialog>
 
+<div class="lang-fab"><button type="button" class="lang" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18"/></g></svg><span data-lang-label>EN</span></button></div>
 <div class="mbar" data-mbar>
+  <button type="button" class="lang lang-mbar" data-lang-toggle aria-label="Switch to English" data-en-aria-label="Wissel naar Nederlands"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18"/></g></svg><span data-lang-label>EN</span></button>
   <a class="btn btn-gold mbar-order" href="menu.html" data-mbar-order><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10.941c2.333-3.308.167-7.823-1-8.941c0 3.395-2.235 5.299-3.667 6.706C5.903 10.114 5 12 5 14.294C5 17.998 8.134 21 12 21s7-3.002 7-6.706c0-1.712-1.232-4.403-2.333-5.588c-2.084 3.353-3.257 3.353-4.667 2.235"/></svg><span data-en="Order now">Bestel nu</span></a>
   <button type="button" class="mbar-cart" data-cart-open aria-label="Winkelmand openen" data-en-aria-label="Open cart"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6.331 8H17.67a2 2 0 0 1 1.977 2.304l-1.255 8.152A3 3 0 0 1 15.426 21H8.574a3 3 0 0 1-2.965-2.544l-1.255-8.152A2 2 0 0 1 6.331 8"/><path d="M9 11V6a3 3 0 0 1 6 0v5"/></g></svg><span data-cart-total>€0,00</span><span class="cart-count" data-cart-count hidden>0</span></button>
 </div>

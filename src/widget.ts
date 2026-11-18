@@ -225,6 +225,7 @@ class CrispyDeliveryMap extends HTMLElement {
     this.el.status.hidden = true;
     this.addLayers();
     this.addPins();
+    this.addStore();
     await this.useGoogleBoundaries();
     this.bindMap();
     this.applyFilter(false);
@@ -357,6 +358,20 @@ class CrispyDeliveryMap extends HTMLElement {
     // Put the badges on Google's own centre point of each postcode.
     for (const [pc, g] of found) this.pinPos.get(pc)?.setPosition({ lat: g.lat, lng: g.lng });
     console.info(`[crispy-delivery-map] Using Google postcode boundaries for ${this.placeToPc.size} areas.`);
+  }
+
+  /** Optional restaurant pin: store="lat,lng", store-label="Name", store-icon="logo.png". */
+  private addStore() {
+    const at = (this.getAttribute('store') || '').split(',').map(Number);
+    if (at.length !== 2 || at.some(n => !Number.isFinite(n))) return;
+    const el = document.createElement('div');
+    el.className = 'cdm-store';
+    const icon = this.getAttribute('store-icon');
+    const label = this.getAttribute('store-label') || '';
+    el.innerHTML = (icon ? `<img src="${esc(icon)}" alt="">` : '') + (label ? `<span>${esc(label)}</span>` : '');
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', label || 'Restaurant');
+    createHtmlMarker(this.map!, { lat: at[0], lng: at[1] }, el, 6);
   }
 
   private addPins() {
@@ -558,6 +573,8 @@ class CrispyDeliveryMap extends HTMLElement {
       if (li) { e.preventDefault(); this.choose(Number(li.dataset.i)); }
     });
     this.el.lang.addEventListener('click', () => this.setAttribute('lang', this.locale === 'nl' ? 'en' : 'nl'));
+    // hide-lang: the host page provides its own language switch
+    if (this.hasAttribute('hide-lang')) this.el.lang.hidden = true;
 
     this.el.city.addEventListener('click', e => {
       const v = (e.target as HTMLElement).closest<HTMLElement>('.chip')?.dataset.v;

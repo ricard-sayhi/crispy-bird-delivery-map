@@ -71,7 +71,7 @@
       }
     });
     $$('.money').forEach(m => (m.textContent = eur(+m.dataset.v)));
-    $$('[data-lang-toggle]').forEach(b => (b.textContent = lang === 'en' ? 'NL' : 'EN'));
+    $$('[data-lang-label]').forEach(b => (b.textContent = lang === 'en' ? 'NL' : 'EN'));
     $$('crispy-delivery-map').forEach(m => m.setAttribute('lang', lang));
     renderStatus(); renderCart(); renderPcResults(); renderExpiry(); if (isCheckout) renderCheckout();
   }
@@ -330,12 +330,38 @@
     addEventListener('scroll', spy, { passive: true }); spy();
   }
 
+  // ------------------------------------------------------------ reviews carousel
+  $$('[data-carousel]').forEach(c => {
+    const track = $('[data-track]', c), prev = $('[data-prev]', c), next = $('[data-next-rv]', c);
+    const step = () => { const li = track.firstElementChild; return li ? li.getBoundingClientRect().width + 22 : 300; };
+    const sync = () => { prev.disabled = track.scrollLeft < 8; next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8; };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: reduced ? 'auto' : 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: reduced ? 'auto' : 'smooth' }));
+    track.addEventListener('scroll', sync, { passive: true });
+    track.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); } if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); } });
+    addEventListener('resize', sync); sync();
+  });
+
+  // ------------------------------------------------------------ same-page links scroll smoothly
+  const pagePath = p => p.replace(/\/(index\.html)?$/, '/');
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+    const url = new URL(a.getAttribute('href'), location.href);
+    if (url.origin !== location.origin || pagePath(url.pathname) !== pagePath(location.pathname)) return;
+    const target = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+    if (url.hash && !target) return;
+    e.preventDefault();
+    if (nav.classList.contains('open')) setNav(false);
+    if (target) { target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); history.pushState(null, '', url.hash); }
+    else { scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); history.pushState(null, '', url.pathname.split('/').pop() || './'); }
+  });
+
   // ------------------------------------------------------------ deals expiry
   function renderExpiry() {
     $$('[data-expires]').forEach(el => {
       if (!el.dataset.expires) return;
       const days = Math.ceil((new Date(el.dataset.expires + 'T23:59:59') - new Date()) / 864e5);
-      el.lastChild.textContent = L().expires(days);
+      el.lastElementChild.textContent = L().expires(days);
     });
   }
 
