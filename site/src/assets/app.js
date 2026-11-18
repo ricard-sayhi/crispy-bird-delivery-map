@@ -257,6 +257,7 @@
     else if (!e.shiftKey && document.activeElement === f.at(-1)) { e.preventDefault(); f[0].focus(); }
   });
   $('[data-checkout]').addEventListener('click', e => { if (!totals().ok) e.preventDefault(); });
+  $$('[data-step-checkout]').forEach(a => a.addEventListener('click', e => { if (!totals().count) { e.preventDefault(); openCart(); } }));
 
   // ------------------------------------------------------------ item modal
   const modal = $('[data-modal]'), form = $('[data-modal-form]');

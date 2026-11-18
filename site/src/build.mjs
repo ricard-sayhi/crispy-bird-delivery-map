@@ -235,7 +235,7 @@ const dishCard = (m, { big = false } = {}) => {
   const badgeTxt = m.promo === 'tenders11' ? '1+1' : m.was ? `-${Math.round((1 - m.price / m.was) * 100)}%` : '';
   const badge = badgeTxt ? `<span class="badge"><span>${badgeTxt}</span></span>` : '';
   const name = m.name + (m.size ? ` <span class="size">${m.size}</span>` : '');
-  return `<article class="dish${big ? ' dish-big' : ''}" data-reveal>
+  return `<article class="dish${big ? ' dish-big' : ''}" data-cat="${m.cat}" data-reveal>
   <div class="dish-media">${badge}<img src="${m.img}" alt="${esc(m.name)}: ${esc(m.desc.nl)}" data-en-alt="${esc(m.name)}: ${esc(m.desc.en)}" ${dim(m.img)} loading="lazy" decoding="async"></div>
   <div class="dish-body">
     <h3>${name}</h3>
@@ -340,9 +340,9 @@ pages['index.html'] = {
   <div class="wrap">
     <h2>${t('Zo simpel is het', "It's that simple")}</h2>
     <ol class="steps">
-      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="img/7465ef9251ed03559889c0296b034e7b.webp" ${dim('7465ef9251ed03559889c0296b034e7b.webp')} alt="" loading="lazy"></div><h3>${t('Kies je bird', 'Pick your bird')}</h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p></li>
-      <li data-reveal><span class="step-n">2</span><div class="step-art step-pay"><span>iDEAL</span><span>Wero</span></div><h3>${t('Bestel & betaal met iDEAL', 'Order & pay with iDEAL')}</h3><p>${t('Of met Wero. Online, in een paar tikken.', 'Or with Wero. Online, in a few taps.')}</p></li>
-      <li data-reveal><span class="step-n">3</span><div class="step-art step-door">${icon('truck-delivery', 'ic ic-xl')}</div><h3>${t('Crispy aan de deur', 'Crispy at your door')}</h3><p>${t('Gratis bezorgd. Of haal hem zelf op aan de Kruyderlaan.', 'Free delivery. Or pick it up yourself on Kruyderlaan.')}</p></li>
+      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="img/7465ef9251ed03559889c0296b034e7b.webp" ${dim('7465ef9251ed03559889c0296b034e7b.webp')} alt="" loading="lazy"></div><h3><a class="step-link" href="menu.html">${t('Kies je bird', 'Pick your bird')}</a></h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p><span class="step-go" aria-hidden="true">${t('Naar het menu', 'To the menu')} ${icon('arrow-right')}</span></li>
+      <li data-reveal><span class="step-n">2</span><div class="step-art step-pay"><span>iDEAL</span><span>Wero</span></div><h3><a class="step-link" href="afrekenen.html" data-step-checkout>${t('Bestel & betaal met iDEAL', 'Order & pay with iDEAL')}</a></h3><p>${t('Of met Wero. Online, in een paar tikken.', 'Or with Wero. Online, in a few taps.')}</p><span class="step-go" aria-hidden="true">${t('Naar afrekenen', 'To checkout')} ${icon('arrow-right')}</span></li>
+      <li data-reveal><span class="step-n">3</span><div class="step-art step-door">${icon('truck-delivery', 'ic ic-xl')}</div><h3><a class="step-link" href="contact.html#bezorging">${t('Crispy aan de deur', 'Crispy at your door')}</a></h3><p>${t('Gratis bezorgd. Of haal hem zelf op aan de Kruyderlaan.', 'Free delivery. Or pick it up yourself on Kruyderlaan.')}</p><span class="step-go" aria-hidden="true">${t('Bekijk de bezorgkaart', 'See the delivery map')} ${icon('arrow-right')}</span></li>
     </ol>
   </div>
 </section>
@@ -401,7 +401,7 @@ ${pageHead(t('Vers gefrituurd, elke bestelling', 'Fried fresh, every order'), 'M
 </nav>
 <div class="wrap menu-wrap">
   <p class="allergy-banner" role="note">${icon('alert-triangle')}<span>${t('<strong>Allergie?</strong> Vermeld het altijd bij je bestelling. Kruisbesmetting kunnen we in onze keuken niet volledig uitsluiten.', '<strong>Allergy?</strong> Always mention it with your order. We cannot fully rule out cross-contamination in our kitchen.')}</span></p>
-  ${CATEGORIES.map(c => `<section class="menu-sec" id="${c.id}" aria-labelledby="h-${c.id}">
+  ${CATEGORIES.map(c => `<section class="menu-sec" id="${c.id}" data-cat="${c.id}" aria-labelledby="h-${c.id}">
     <h2 id="h-${c.id}">${t(c.nl, c.en)}</h2>
     <div class="dish-grid">${MENU.filter(m => m.cat === c.id).map(m => dishCard(m)).join('')}</div>
   </section>`).join('')}
