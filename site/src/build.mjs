@@ -307,7 +307,7 @@ pages['index.html'] = {
     </div>
     <div class="hero-art" aria-hidden="false">
       <div class="plate"><img src="img/6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp" width="529" height="450" alt="Classic Chicken Burger met krokante kippendij op een houten plank" data-en-alt="Classic Chicken Burger with crispy chicken thigh on a wooden board" fetchpriority="high"></div>
-      <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text textLength="488" lengthAdjust="spacing"><textPath href="#circ" textLength="488" lengthAdjust="spacing">100% HALAL · 100% KIPPENDIJ · 2× GEFRITUURD · </textPath></text></svg>
+      <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text textLength="488" lengthAdjust="spacing"><textPath href="#circ" textLength="488" lengthAdjust="spacing">100% HALAL · 100% KIPPENDIJ · 2× GEFRITUURD · </textPath></text><image href="img/w/logo-line.png" x="72" y="56" width="58" height="84"/></svg>
       <a class="price-tag" href="menu.html#burgers"><span>Classic</span><strong>${money(9.99)}</strong></a>
     </div>
   </div>
