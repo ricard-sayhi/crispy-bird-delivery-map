@@ -799,3 +799,6 @@ legend + * { clear: both; }
 fieldset > legend { grid-column: 1 / -1; }
 legend + * { clear: none; }
 @media (max-width: 900px) { .co-summary { position: static; } }
+
+/* hidden always wins over component display rules (e.g. the empty-cart state) */
+[hidden] { display: none !important; }
