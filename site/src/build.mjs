@@ -4,10 +4,12 @@ import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as D from './data.mjs';
+import { createHash } from 'node:crypto';
 
 const { BRAND, HOURS, AREA_GROUPS, LOCKED_AREAS, CATEGORIES, TAGS, MENU, CHOICES, DEALS, REVIEWS } = D;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'dist');
+const assetVersion = f => createHash('sha1').update(readFileSync(join(ROOT, 'src', 'assets', f))).digest('hex').slice(0, 8);
 const require = createRequire(import.meta.url);
 const TABLER = require('@iconify-json/tabler/icons.json');
 
@@ -211,7 +213,7 @@ const layout = ({ page, title, description, body, ld = '', bodyClass = '' }) => 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bowlby+One&family=Permanent+Marker&display=swap">
-<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/app.css?v=${assetVersion('app.css')}">
 ${ld}
 </head>
 <body class="${bodyClass}">
@@ -224,7 +226,7 @@ ${cartDrawer()}
 ${itemModal()}
 ${mobileBar()}
 <script type="application/json" id="site-data">${clientData}</script>
-<script src="assets/app.js" defer></script>
+<script src="assets/app.js?v=${assetVersion('app.js')}" defer></script>
 </body>
 </html>`;
 
@@ -501,8 +503,8 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
       <ol class="co-steps" aria-label="Stappen">
         <li aria-current="step" data-step-dot="1">${t('Gegevens', 'Details')}</li><li data-step-dot="2">${t('Betalen', 'Payment')}</li><li data-step-dot="3">${t('Bevestigen', 'Confirm')}</li>
       </ol>
-      <fieldset data-step="1">
-        <legend class="sr-only">${t('1. Je gegevens', '1. Your details')}</legend><h2 class="co-legend" aria-hidden="true">${t('1. Je gegevens', '1. Your details')}</h2>
+      <fieldset data-step="1" aria-labelledby="co-step-1">
+        <h2 class="co-legend" id="co-step-1">${t('1. Je gegevens', '1. Your details')}</h2>
         <div class="field"><label for="co-name">${t('Naam', 'Name')}</label><input id="co-name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="co-phone">${t('Telefoon', 'Phone')}</label><input id="co-phone" name="phone" type="tel" autocomplete="tel" required></div>
         <div class="field field-wide"><label for="co-email">${t('E-mail (voor je bevestiging)', 'E-mail (for your confirmation)')}</label><input id="co-email" name="email" type="email" autocomplete="email" required></div>
@@ -514,8 +516,8 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
         <div class="field field-wide"><label for="co-note">${t('Opmerking of allergie', 'Note or allergy')}</label><textarea id="co-note" name="note" rows="2"></textarea></div>
         <button type="button" class="btn btn-black" data-next="2">${t('Naar betalen', 'Continue to payment')} ${icon('arrow-right')}</button>
       </fieldset>
-      <fieldset data-step="2" hidden>
-        <legend class="sr-only">${t('2. Betalen', '2. Payment')}</legend><h2 class="co-legend" aria-hidden="true">${t('2. Betalen', '2. Payment')}</h2>
+      <fieldset data-step="2" aria-labelledby="co-step-2" hidden>
+        <h2 class="co-legend" id="co-step-2">${t('2. Betalen', '2. Payment')}</h2>
         <div class="field field-wide"><label for="co-code">${t('Kortingscode', 'Promo code')}</label><div class="nl-row"><input id="co-code" name="code" autocomplete="off" data-co-code><button type="button" class="btn btn-line" data-apply-code>${t('Toepassen', 'Apply')}</button></div><p class="form-msg" data-code-msg aria-live="polite"></p></div>
         <div class="pay-options field-wide" role="radiogroup" aria-labelledby="pay-label">
           <p id="pay-label" class="label">${t('Betaalmethode', 'Payment method')}</p>
@@ -524,8 +526,8 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
         </div>
         <div class="co-nav"><button type="button" class="btn btn-line" data-next="1">${t('Terug', 'Back')}</button><button type="button" class="btn btn-black" data-next="3">${t('Naar overzicht', 'Review order')} ${icon('arrow-right')}</button></div>
       </fieldset>
-      <fieldset data-step="3" hidden>
-        <legend class="sr-only">${t('3. Bevestigen', '3. Confirm')}</legend><h2 class="co-legend" aria-hidden="true">${t('3. Bevestigen', '3. Confirm')}</h2>
+      <fieldset data-step="3" aria-labelledby="co-step-3" hidden>
+        <h2 class="co-legend" id="co-step-3">${t('3. Bevestigen', '3. Confirm')}</h2>
         <div class="co-review" data-co-review></div>
         <p class="allergy-banner">${icon('alert-triangle')}<span>${t('Allergie? Zet het in de opmerking. Kruisbesmetting kunnen we niet volledig uitsluiten.', 'Allergy? Put it in the note. We cannot fully rule out cross-contamination.')}</span></p>
         <div class="co-nav"><button type="button" class="btn btn-line" data-next="2">${t('Terug', 'Back')}</button><button type="submit" class="btn btn-gold btn-lg">${t('Bestellen en betalen', 'Order and pay')}</button></div>
