@@ -84,7 +84,7 @@ const footer = () => `
     <nav ${ta('aria-label', 'Snelle links', 'Quick links')}><h2>${t('Snel naar', 'Quick links')}</h2><ul>${NAV.map(n => `<li><a href="${n.href}">${t(n.nl, n.en)}</a></li>`).join('')}<li><a href="index.html#reviews">Reviews</a></li><li><a href="contact.html#bezorging">${t('Bezorging', 'Delivery')}</a></li></ul></nav>
     <nav ${ta('aria-label', 'Menucategorieën', 'Menu categories')}><h2>Menu</h2><ul>${CATEGORIES.map(c => `<li><a href="menu.html#${c.id}">${t(c.nl, c.en)}</a></li>`).join('')}</ul></nav>
     <div><h2>${t('Bezorggebieden', 'Delivery areas')}</h2><ul class="f-areas">${AREA_GROUPS.map(a => `<li>${t(a.nl.split(':')[0], a.en.split(':')[0])} <span>${t('min.', 'min.')} ${money(a.min)}</span></li>`).join('')}</ul></div>
-    <div><h2>${t('Openingstijden', 'Opening hours')}</h2><table class="hours hours-sm"><tbody>${hoursRows()}</tbody></table><p class="f-note">${t('Op zondag en feestdagen kan het iets langer duren.', 'Sundays and public holidays can take a little longer.')}</p></div>
+    <div class="f-hours"><h2>${t('Openingstijden', 'Opening hours')}</h2><table class="hours hours-sm"><tbody>${hoursRows()}</tbody></table><p class="f-note">${t('Op zondag en feestdagen kan het iets langer duren.', 'Sundays and public holidays can take a little longer.')}</p></div>
     <div><h2>Contact</h2><address>${BRAND.street}<br>${BRAND.postcode} ${BRAND.city}<br><a href="${BRAND.phoneHref}">${BRAND.phone}</a></address>
       ${BRAND.socials.length ? `<ul class="socials">${BRAND.socials.map(s => `<li><a href="${s.url}" rel="noopener" aria-label="${esc(s.name)}">${icon('brand-' + s.name.toLowerCase())}</a></li>`).join('')}</ul>` : ''}
     </div>
@@ -502,7 +502,7 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
         <li aria-current="step" data-step-dot="1">${t('Gegevens', 'Details')}</li><li data-step-dot="2">${t('Betalen', 'Payment')}</li><li data-step-dot="3">${t('Bevestigen', 'Confirm')}</li>
       </ol>
       <fieldset data-step="1">
-        <legend>${t('1. Je gegevens', '1. Your details')}</legend>
+        <legend class="sr-only">${t('1. Je gegevens', '1. Your details')}</legend><h2 class="co-legend" aria-hidden="true">${t('1. Je gegevens', '1. Your details')}</h2>
         <div class="field"><label for="co-name">${t('Naam', 'Name')}</label><input id="co-name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="co-phone">${t('Telefoon', 'Phone')}</label><input id="co-phone" name="phone" type="tel" autocomplete="tel" required></div>
         <div class="field field-wide"><label for="co-email">${t('E-mail (voor je bevestiging)', 'E-mail (for your confirmation)')}</label><input id="co-email" name="email" type="email" autocomplete="email" required></div>
@@ -515,7 +515,7 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
         <button type="button" class="btn btn-black" data-next="2">${t('Naar betalen', 'Continue to payment')} ${icon('arrow-right')}</button>
       </fieldset>
       <fieldset data-step="2" hidden>
-        <legend>${t('2. Betalen', '2. Payment')}</legend>
+        <legend class="sr-only">${t('2. Betalen', '2. Payment')}</legend><h2 class="co-legend" aria-hidden="true">${t('2. Betalen', '2. Payment')}</h2>
         <div class="field field-wide"><label for="co-code">${t('Kortingscode', 'Promo code')}</label><div class="nl-row"><input id="co-code" name="code" autocomplete="off" data-co-code><button type="button" class="btn btn-line" data-apply-code>${t('Toepassen', 'Apply')}</button></div><p class="form-msg" data-code-msg aria-live="polite"></p></div>
         <div class="pay-options field-wide" role="radiogroup" aria-labelledby="pay-label">
           <p id="pay-label" class="label">${t('Betaalmethode', 'Payment method')}</p>
@@ -525,7 +525,7 @@ ${pageHead(t('Bijna crispy', 'Almost crispy'), t('Afrekenen', 'Checkout'))}
         <div class="co-nav"><button type="button" class="btn btn-line" data-next="1">${t('Terug', 'Back')}</button><button type="button" class="btn btn-black" data-next="3">${t('Naar overzicht', 'Review order')} ${icon('arrow-right')}</button></div>
       </fieldset>
       <fieldset data-step="3" hidden>
-        <legend>${t('3. Bevestigen', '3. Confirm')}</legend>
+        <legend class="sr-only">${t('3. Bevestigen', '3. Confirm')}</legend><h2 class="co-legend" aria-hidden="true">${t('3. Bevestigen', '3. Confirm')}</h2>
         <div class="co-review" data-co-review></div>
         <p class="allergy-banner">${icon('alert-triangle')}<span>${t('Allergie? Zet het in de opmerking. Kruisbesmetting kunnen we niet volledig uitsluiten.', 'Allergy? Put it in the note. We cannot fully rule out cross-contamination.')}</span></p>
         <div class="co-nav"><button type="button" class="btn btn-line" data-next="2">${t('Terug', 'Back')}</button><button type="submit" class="btn btn-gold btn-lg">${t('Bestellen en betalen', 'Order and pay')}</button></div>
