@@ -64,45 +64,44 @@ export const TAGS = {
 };
 
 const D = (nl, en) => ({ nl, en });
-const img = (f) => `img/${f}.webp`;
 
 // options: which choices the item modal asks for. `free` marks an included dip.
 export const MENU = [
   // Combos (20% off: `was` is the normal price)
-  { id: 'meal-deal-small', cat: 'combos', name: 'Meal Deal Small', desc: D('Burger naar keuze, friet en een dip.', 'Burger of your choice, fries and a dip.'), price: 16.8, was: 21.0, img: img('8f0d4951a35342c7dcb7b1e5a3eb6b8f'), tags: ['gluten', 'halal'], options: { burger: 1, dip: 1 }, best: true },
-  { id: 'meal-deal', cat: 'combos', name: 'Meal Deal', desc: D('Burger naar keuze, friet, drankje en een dip.', 'Burger of your choice, fries, a drink and a dip.'), price: 18.0, was: 22.5, img: img('6ae4966bb4de8_Crispy_Chicken_Burger_Feast'), tags: ['gluten', 'halal'], options: { burger: 1, drink: 1, dip: 1 }, best: true },
-  { id: 'meal-deal-xl', cat: 'combos', name: 'Meal Deal XL', desc: D('Burger, 4 tenders, coleslaw, friet, drankje en een gratis dip.', 'Burger, 4 tenders, coleslaw, fries, a drink and a free dip.'), price: 28.4, was: 35.5, img: img('c45aa3e26025cacff5007df127b9c050'), tags: ['gluten', 'halal'], options: { burger: 1, drink: 1, dip: 1, freeDip: true } },
-  { id: 'everything', cat: 'combos', name: 'Everything', desc: D('Alle 4 burgers, 8 tenders, 2x coleslaw, 3x friet, 4 drankjes, alle dips en 2 brownies.', 'All 4 burgers, 8 tenders, 2x coleslaw, 3x fries, 4 drinks, every dip and 2 brownies.'), price: 95.6, was: 119.5, img: img('ba997706caeeea7e47afbbab7df490fc'), tags: ['gluten', 'noten', 'halal'] },
+  { id: 'meal-deal-small', cat: 'combos', name: 'Meal Deal Small', desc: D('Burger naar keuze, friet en een dip.', 'Burger of your choice, fries and a dip.'), price: 16.8, was: 21.0, img: 'img/dishes/combos/meal-deal-small.webp', tags: ['gluten', 'halal'], options: { burger: 1, dip: 1 }, best: true },
+  { id: 'meal-deal', cat: 'combos', name: 'Meal Deal', desc: D('Burger naar keuze, friet, drankje en een dip.', 'Burger of your choice, fries, a drink and a dip.'), price: 18.0, was: 22.5, img: 'img/dishes/combos/meal-deal.webp', tags: ['gluten', 'halal'], options: { burger: 1, drink: 1, dip: 1 }, best: true },
+  { id: 'meal-deal-xl', cat: 'combos', name: 'Meal Deal XL', desc: D('Burger, 4 tenders, coleslaw, friet, drankje en een gratis dip.', 'Burger, 4 tenders, coleslaw, fries, a drink and a free dip.'), price: 28.4, was: 35.5, img: 'img/dishes/combos/meal-deal-xl.webp', tags: ['gluten', 'halal'], options: { burger: 1, drink: 1, dip: 1, freeDip: true } },
+  { id: 'everything', cat: 'combos', name: 'Everything', desc: D('Alle 4 burgers, 8 tenders, 2x coleslaw, 3x friet, 4 drankjes, alle dips en 2 brownies.', 'All 4 burgers, 8 tenders, 2x coleslaw, 3x fries, 4 drinks, every dip and 2 brownies.'), price: 95.6, was: 119.5, img: 'img/dishes/combos/everything.webp', tags: ['gluten', 'noten', 'halal'] },
   // Burgers
-  { id: 'classic', cat: 'burgers', name: 'Classic Chicken Burger', desc: D('Tomaat, mayo en een sesam-brioche.', 'Tomato, mayo and a sesame brioche.'), price: 9.99, img: img('6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board'), tags: ['gluten', 'ei', 'melk', 'halal'] },
-  { id: 'italian', cat: 'burgers', name: 'Italian Chicken Burger', desc: D('Basilicummayo en gesmolten kaas.', 'Basil mayo and melted cheese.'), price: 14.0, img: img('7465ef9251ed03559889c0296b034e7b'), tags: ['gluten', 'halal'] },
-  { id: 'nashville', cat: 'burgers', name: 'Nashville Hot Chicken Burger', desc: D('Augurk en BBQ-saus. Heet, zoals het hoort.', 'Pickles and BBQ sauce. Hot, the way it should be.'), price: 14.0, img: img('f305e500d35f45c34abaf0218abaf1fe'), tags: ['gluten', 'halal', 'pittig'] },
-  { id: 'korean', cat: 'burgers', name: 'Korean Chicken Burger', desc: D('Kimchi-slaw en gochujang-mayo.', 'Kimchi slaw and gochujang mayo.'), price: 14.0, img: img('36a33aab802c41fbeb6f3d5d2743a08f'), tags: ['gluten', 'halal'] },
-  { id: 'halloumi', cat: 'burgers', name: 'Halloumi Burger', desc: D('Vega. Gebakken ui, augurk en BBQ-saus.', 'Veggie. Fried onion, pickles and BBQ sauce.'), price: 14.0, img: img('d0f151a011182b1b03859df1197cbc1f'), tags: ['gluten', 'vega'] },
+  { id: 'classic', cat: 'burgers', name: 'Classic Chicken Burger', desc: D('Tomaat, mayo en een sesam-brioche.', 'Tomato, mayo and a sesame brioche.'), price: 9.99, img: 'img/dishes/burgers/classic-chicken-burger.webp', tags: ['gluten', 'ei', 'melk', 'halal'] },
+  { id: 'italian', cat: 'burgers', name: 'Italian Chicken Burger', desc: D('Basilicummayo en gesmolten kaas.', 'Basil mayo and melted cheese.'), price: 14.0, img: 'img/dishes/burgers/italian-chicken-burger.webp', tags: ['gluten', 'halal'] },
+  { id: 'nashville', cat: 'burgers', name: 'Nashville Hot Chicken Burger', desc: D('Augurk en BBQ-saus. Heet, zoals het hoort.', 'Pickles and BBQ sauce. Hot, the way it should be.'), price: 14.0, img: 'img/dishes/burgers/nashville-hot-chicken-burger.webp', tags: ['gluten', 'halal', 'pittig'] },
+  { id: 'korean', cat: 'burgers', name: 'Korean Chicken Burger', desc: D('Kimchi-slaw en gochujang-mayo.', 'Kimchi slaw and gochujang mayo.'), price: 14.0, img: 'img/dishes/burgers/korean-chicken-burger.webp', tags: ['gluten', 'halal'] },
+  { id: 'halloumi', cat: 'burgers', name: 'Halloumi Burger', desc: D('Vega. Gebakken ui, augurk en BBQ-saus.', 'Veggie. Fried onion, pickles and BBQ sauce.'), price: 14.0, img: 'img/dishes/burgers/halloumi-burger.webp', tags: ['gluten', 'vega'] },
   // Sides
-  { id: 'tenders', cat: 'sides', name: 'Chicken Tenders', desc: D('Handgepaneerd, met dip. Nu 1+1 gratis.', 'Hand-breaded, with a dip. Now buy 1 get 1 free.'), price: 10.0, img: img('bc3a0ea7fdaf03535be37d36d9fa84c7'), tags: ['gluten', 'halal'], options: { dip: 1, freeDip: true }, promo: 'tenders11', best: true },
-  { id: 'friet', cat: 'sides', name: 'Friet', desc: D('Goudbruin en krokant.', 'Golden and crispy.'), price: 4.5, img: img('7d36f512afaa6e423cd7298226ed1079'), tags: ['gluten', 'vega'] },
-  { id: 'coleslaw', cat: 'sides', name: 'Coleslaw', desc: D('Romig, fris en knapperig.', 'Creamy, fresh and crunchy.'), price: 3.0, img: img('fcdaeffc2142e3f248dd6e340204a46e'), tags: ['vega'] },
+  { id: 'tenders', cat: 'sides', name: 'Chicken Tenders', desc: D('Handgepaneerd, met dip. Nu 1+1 gratis.', 'Hand-breaded, with a dip. Now buy 1 get 1 free.'), price: 10.0, img: 'img/dishes/sides/chicken-tenders.webp', tags: ['gluten', 'halal'], options: { dip: 1, freeDip: true }, promo: 'tenders11', best: true },
+  { id: 'friet', cat: 'sides', name: 'Friet', desc: D('Goudbruin en krokant.', 'Golden and crispy.'), price: 4.5, img: 'img/dishes/sides/friet.webp', tags: ['gluten', 'vega'] },
+  { id: 'coleslaw', cat: 'sides', name: 'Coleslaw', desc: D('Romig, fris en knapperig.', 'Creamy, fresh and crunchy.'), price: 3.0, img: 'img/dishes/sides/coleslaw.webp', tags: ['vega'] },
   // Dips
-  { id: 'mayo', cat: 'dips', name: 'Mayo', desc: D('De klassieker.', 'The classic.'), price: 1.5, img: img('5bf681059c6073242f231d4359d306c8'), tags: [] },
-  { id: 'spicy-mayo', cat: 'dips', name: 'Spicy Mayo', desc: D('Mayo met een kick.', 'Mayo with a kick.'), price: 1.5, img: img('51e80056873cca33bd6069c9c71fa1d7'), tags: ['pittig'] },
-  { id: 'knoflookmayo', cat: 'dips', name: 'Knoflookmayo', desc: D('Romig en vol knoflook.', 'Creamy and full of garlic.'), price: 1.5, img: img('5bf681059c6073242f231d4359d306c8'), tags: [] },
-  { id: 'spicy-bbq', cat: 'dips', name: 'Spicy BBQ', desc: D('Rokerig, zoet en pittig.', 'Smoky, sweet and spicy.'), price: 1.5, img: img('0b81d824fb48a91bb42cb145163f015b'), tags: ['vegan', 'pittig'] },
+  { id: 'mayo', cat: 'dips', name: 'Mayo', desc: D('De klassieker.', 'The classic.'), price: 1.5, img: 'img/dishes/dips/mayo.webp', tags: [] },
+  { id: 'spicy-mayo', cat: 'dips', name: 'Spicy Mayo', desc: D('Mayo met een kick.', 'Mayo with a kick.'), price: 1.5, img: 'img/dishes/dips/spicy-mayo.webp', tags: ['pittig'] },
+  { id: 'knoflookmayo', cat: 'dips', name: 'Knoflookmayo', desc: D('Romig en vol knoflook.', 'Creamy and full of garlic.'), price: 1.5, img: 'img/dishes/dips/knoflookmayo.webp', tags: [] },
+  { id: 'spicy-bbq', cat: 'dips', name: 'Spicy BBQ', desc: D('Rokerig, zoet en pittig.', 'Smoky, sweet and spicy.'), price: 1.5, img: 'img/dishes/dips/spicy-bbq.webp', tags: ['vegan', 'pittig'] },
   // Kids
-  { id: 'kids-meal', cat: 'kids', name: 'Kids Meal', desc: D('3 tenders, friet, een dip en appelsap.', '3 tenders, fries, a dip and apple juice.'), price: 10.0, was: 12.5, img: img('2e79d519ec4dbd2a830d672ea21965e0'), tags: ['gluten', 'halal'], options: { dip: 1 } },
+  { id: 'kids-meal', cat: 'kids', name: 'Kids Meal', desc: D('3 tenders, friet, een dip en appelsap.', '3 tenders, fries, a dip and apple juice.'), price: 10.0, was: 12.5, img: 'img/dishes/kids/kids-meal.webp', tags: ['gluten', 'halal'], options: { dip: 1 } },
   // Desserts
-  { id: 'brownie', cat: 'desserts', name: 'Brownie', desc: D('Chocolade met walnoten.', 'Chocolate with walnuts.'), price: 3.5, img: img('352670751edb3d25b411fca8b99b60d9'), tags: ['noten', 'vega'] },
+  { id: 'brownie', cat: 'desserts', name: 'Brownie', desc: D('Chocolade met walnoten.', 'Chocolate with walnuts.'), price: 3.5, img: 'img/dishes/desserts/brownie.webp', tags: ['noten', 'vega'] },
   // Drinks
-  { id: 'coca-cola', cat: 'drinks', name: 'Coca-Cola', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: img('8372783d63f5ea9f9c2da3e2286c62ae'), tags: [] },
-  { id: 'sprite', cat: 'drinks', name: 'Sprite', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: img('6ae498e99a21d_sprite'), tags: [] },
-  { id: 'diet-coke', cat: 'drinks', name: 'Diet Coke', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: img('6ae498f6f381c_diet_coke'), tags: [] },
-  { id: 'lipton', cat: 'drinks', name: 'Lipton Iced Tea', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: img('5d1d530a6cd66a1a77236047b8d74d8b'), tags: [] },
-  { id: 'fanta', cat: 'drinks', name: 'Fanta Orange', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: img('6ae49901161e2_fanta'), tags: [] },
-  { id: 'spa-rood', cat: 'drinks', name: 'Spa Rood', size: '500ml', desc: D('Bruisend water, 500 ml.', 'Sparkling water, 500 ml.'), price: 2.95, img: img('534205b56fd107431de263f15cc605a2'), tags: [] },
-  { id: 'spa-blauw', cat: 'drinks', name: 'Spa Blauw', size: '500ml', desc: D('Plat water, 500 ml.', 'Still water, 500 ml.'), price: 2.95, img: img('a3926257cc9625e36b3da9c48f86b062'), tags: [] },
-  { id: 'red-bull', cat: 'drinks', name: 'Red Bull', size: '250ml', desc: D('Blikje 250 ml.', 'Can, 250 ml.'), price: 3.95, img: img('6ae499170f46a_Redbull'), tags: [] },
+  { id: 'coca-cola', cat: 'drinks', name: 'Coca-Cola', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: 'img/dishes/drinks/coca-cola.webp', tags: [] },
+  { id: 'sprite', cat: 'drinks', name: 'Sprite', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: 'img/dishes/drinks/sprite.webp', tags: [] },
+  { id: 'diet-coke', cat: 'drinks', name: 'Diet Coke', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: 'img/dishes/drinks/diet-coke.webp', tags: [] },
+  { id: 'lipton', cat: 'drinks', name: 'Lipton Iced Tea', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: 'img/dishes/drinks/lipton-iced-tea.webp', tags: [] },
+  { id: 'fanta', cat: 'drinks', name: 'Fanta Orange', size: '330ml', desc: D('Blikje 330 ml.', 'Can, 330 ml.'), price: 2.95, img: 'img/dishes/drinks/fanta-orange.webp', tags: [] },
+  { id: 'spa-rood', cat: 'drinks', name: 'Spa Rood', size: '500ml', desc: D('Bruisend water, 500 ml.', 'Sparkling water, 500 ml.'), price: 2.95, img: 'img/dishes/drinks/spa-rood.webp', tags: [] },
+  { id: 'spa-blauw', cat: 'drinks', name: 'Spa Blauw', size: '500ml', desc: D('Plat water, 500 ml.', 'Still water, 500 ml.'), price: 2.95, img: 'img/dishes/drinks/spa-blauw.webp', tags: [] },
+  { id: 'red-bull', cat: 'drinks', name: 'Red Bull', size: '250ml', desc: D('Blikje 250 ml.', 'Can, 250 ml.'), price: 3.95, img: 'img/dishes/drinks/red-bull.webp', tags: [] },
   // Team combos
-  { id: 'two-burgers', cat: 'team', name: '2 Burgers', desc: D('Kies twee burgers naar keuze en bespaar €2.', 'Pick any two burgers and save €2.'), price: 26.0, img: img('6ae4cc4f03e77_Crispy_Chicken_Burgers_on_Wooden_Board'), tags: ['gluten', 'halal'], options: { burger: 2 } },
+  { id: 'two-burgers', cat: 'team', name: '2 Burgers', desc: D('Kies twee burgers naar keuze en bespaar €2.', 'Pick any two burgers and save €2.'), price: 26.0, img: 'img/dishes/team/2-burgers.webp', tags: ['gluten', 'halal'], options: { burger: 2 } },
 ];
 
 // Choice lists used by the item modal.
@@ -115,9 +114,30 @@ export const CHOICES = {
 // Active promotions. `expires`: ISO date or null (null shows "zolang de actie loopt").
 // OWNER: set real end dates if a deal has one.
 export const DEALS = [
-  { id: 'combos20', item: 'meal-deal', img: 'img/deal-combo.webp', badge: D('-20%', '-20%'), title: D("20% korting op combo's", '20% off all combos'), body: D('Alle Meal Deals, de Kids Meal en Everything: de korting zit al in de prijs.', 'Every Meal Deal, the Kids Meal and Everything: the discount is already in the price.'), expires: null },
-  { id: 'tenders11', item: 'tenders', img: 'img/deal-tenders.webp', badge: D('1+1', '1+1'), title: D('1+1 Tenders', 'Tenders 1+1'), body: D('Bestel Chicken Tenders, krijg er nog een portie bij. Inclusief gratis dipsaus.', 'Order Chicken Tenders, get a second portion free. Free dip included.'), expires: null },
+  { id: 'combos20', item: 'meal-deal', img: 'img/deals/combos-20-procent.webp', badge: D('-20%', '-20%'), title: D("20% korting op combo's", '20% off all combos'), body: D('Alle Meal Deals, de Kids Meal en Everything: de korting zit al in de prijs.', 'Every Meal Deal, the Kids Meal and Everything: the discount is already in the price.'), expires: null },
+  { id: 'tenders11', item: 'tenders', img: 'img/deals/tenders-1-plus-1.webp', badge: D('1+1', '1+1'), title: D('1+1 Tenders', 'Tenders 1+1'), body: D('Bestel Chicken Tenders, krijg er nog een portie bij. Inclusief gratis dipsaus.', 'Order Chicken Tenders, get a second portion free. Free dip included.'), expires: null },
 ];
+
+// Photos that are not a dish or a deal. To change one, replace the file in site/images/
+// (same name), or point `src` at a new file. Width and height are read from the file itself.
+// `alt` describes the photo for screen readers and search engines (NL + EN); leave both empty
+// for a purely decorative photo.
+export const PAGE_IMAGES = {
+  hero: { src: 'img/page/home-hero.webp', alt: D('Classic Chicken Burger met krokante kippendij op een houten plank', 'Classic Chicken Burger with crispy chicken thigh on a wooden board') },
+  step1: { src: 'img/page/home-step-1.webp', alt: D('', '') },
+  banner: { src: 'img/page/home-banner.webp', alt: D('Tafel vol crispy chicken burgers, friet en dips', 'A table full of crispy chicken burgers, fries and dips') },
+  // Shown when a page is shared on WhatsApp, Facebook etc. Best at 1200x630.
+  share: 'img/page/home-banner.webp',
+};
+
+// Logo files (site/images/brand/). Keep the sizes: 192x192 and 512x512 PNG, square.
+export const LOGO = {
+  small: 'img/brand/logo-192.png',
+  large: 'img/brand/logo-512.png',
+  line: 'img/brand/logo-line.png',   // line drawing, used in the hero stamp and the empty cart
+  favicon: 'img/brand/favicon.ico',
+  appleTouch: 'img/brand/apple-touch-icon.png',
+};
 
 // Free delivery everywhere; pickup has no minimum order (OWNER: confirm).
 export const PICKUP_MIN = 0;

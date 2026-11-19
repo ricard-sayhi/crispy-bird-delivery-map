@@ -1,12 +1,12 @@
 // Builds the static Crispy Bird site into site/dist.  Run: node src/build.mjs
-import { mkdirSync, writeFileSync, copyFileSync, readdirSync, existsSync, rmSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, copyFileSync, readdirSync, existsSync, rmSync, readFileSync, cpSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as D from './data.mjs';
 import { createHash } from 'node:crypto';
 
-const { BRAND, HOURS, AREA_GROUPS, LOCKED_AREAS, CATEGORIES, TAGS, MENU, CHOICES, DEALS, REVIEWS } = D;
+const { BRAND, HOURS, AREA_GROUPS, LOCKED_AREAS, CATEGORIES, TAGS, MENU, CHOICES, DEALS, REVIEWS, PAGE_IMAGES, LOGO } = D;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'dist');
 const assetVersion = f => createHash('sha1').update(readFileSync(join(ROOT, 'src', 'assets', f))).digest('hex').slice(0, 8);
@@ -27,8 +27,35 @@ const icon = (name, cls = 'ic') => {
   return `<svg class="${cls}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">${i.body}</svg>`;
 };
 const byId = Object.fromEntries(MENU.map(m => [m.id, m]));
-const SIZES = JSON.parse(readFileSync(join(ROOT, 'img', 'w', 'sizes.json'), 'utf8'));
-const dim = src => { const [w, h] = SIZES[src.split('/').pop()] || [560, 560]; return `width="${w}" height="${h}"`; };
+// Photos live in site/images/ and are published as img/. Width and height are read from
+// the file itself (WebP, PNG, JPEG or GIF), so swapping a photo needs no other change.
+const IMAGES = join(ROOT, 'images');
+const imageFile = src => join(IMAGES, src.replace(/^img\//, ''));
+const imageSize = (src) => {
+  const file = imageFile(src);
+  if (!existsSync(file)) throw new Error(`Photo not found: ${src} (expected at ${file})`);
+  const b = readFileSync(file);
+  if (b.toString('ascii', 1, 4) === 'PNG') return [b.readUInt32BE(16), b.readUInt32BE(20)];
+  if (b.toString('ascii', 0, 3) === 'GIF') return [b.readUInt16LE(6), b.readUInt16LE(8)];
+  if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+    const kind = b.toString('ascii', 12, 16);
+    if (kind === 'VP8 ') return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+    if (kind === 'VP8L') { const n = b.readUInt32LE(21); return [(n & 0x3fff) + 1, ((n >> 14) & 0x3fff) + 1]; }
+    if (kind === 'VP8X') return [b.readUIntLE(24, 3) + 1, b.readUIntLE(27, 3) + 1];
+  }
+  if (b[0] === 0xff && b[1] === 0xd8) {
+    for (let i = 2; i < b.length - 9;) {
+      if (b[i] !== 0xff) { i++; continue; }
+      const m = b[i + 1];
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  throw new Error(`Cannot read the size of ${src}: use WebP, PNG, JPEG or GIF.`);
+};
+const dim = src => { const [w, h] = imageSize(src); return `width="${w}" height="${h}"`; };
+// alt text in both languages; an empty alt marks a decorative photo
+const altAttr = a => a && a.nl ? `alt="${esc(a.nl)}" data-en-alt="${esc(a.en)}"` : 'alt=""';
 const year = 2026;
 
 // ---------------------------------------------------------------- shared chrome
@@ -40,7 +67,7 @@ const NAV = [
 ];
 
 const logo = (cls = '') => `<a class="brand ${cls}" href="index.html" aria-label="The Crispy Bird, home">
-  <img src="img/logo-192.png" width="44" height="44" alt="">
+  <img src="${LOGO.small}" width="44" height="44" alt="">
   <span class="brand-word">The Crispy Bird</span></a>`;
 
 const header = page => `
@@ -78,7 +105,7 @@ const footer = () => `
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="f-brand">
-      <img src="img/logo-192.png" width="72" height="72" alt="The Crispy Bird logo" loading="lazy">
+      <img src="${LOGO.small}" width="72" height="72" alt="The Crispy Bird logo" loading="lazy">
       <p class="f-tag">Lekker Crispy.<br>Made to deliver.</p>
       <p class="f-trust">${icon('certificate')}${t('100% halal · gratis bezorging', '100% halal · free delivery')}</p>
       <p class="pay-badge" ${ta('aria-label', 'Online betalen met iDEAL of Wero', 'Pay online with iDEAL or Wero')}><span>iDEAL</span><span aria-hidden="true">|</span><span>Wero</span></p>
@@ -112,7 +139,7 @@ const cartDrawer = () => `
     <div class="cart-pc" data-cart-pc></div>
     <ul class="lines" data-lines></ul>
     <div class="empty" data-empty>
-      <img src="img/w/logo-line.png" alt="" width="80" height="116">
+      <img src="${LOGO.line}" alt="" width="80" height="116">
       <p>${t('Nog leeg. Je bird wacht op je.', 'Still empty. Your bird is waiting.')}</p>
       <a class="btn btn-black" href="menu.html">${t('Naar het menu', 'Go to the menu')}</a>
     </div>
@@ -165,7 +192,7 @@ const restaurantLd = (withMenu = false) => {
   const days = { 0: 'Sunday', 1: 'Monday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday' };
   const ld = {
     '@context': 'https://schema.org', '@type': 'Restaurant', name: BRAND.name, url: BRAND.url,
-    image: BRAND.url + 'img/banner.webp', logo: BRAND.url + 'img/logo-512.png', telephone: BRAND.phone,
+    image: BRAND.url + PAGE_IMAGES.share, logo: BRAND.url + LOGO.large, telephone: BRAND.phone,
     servesCuisine: ['Fried chicken', 'Burgers', 'Halal'], priceRange: '€€',
     address: { '@type': 'PostalAddress', streetAddress: BRAND.street, postalCode: BRAND.postcode, addressLocality: BRAND.city, addressCountry: BRAND.country },
     geo: { '@type': 'GeoCoordinates', latitude: BRAND.geo.lat, longitude: BRAND.geo.lng },
@@ -203,12 +230,12 @@ const layout = ({ page, title, description, body, ld = '', bodyClass = '' }) => 
 <meta property="og:site_name" content="The Crispy Bird">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="${BRAND.url}img/banner.webp">
+<meta property="og:image" content="${BRAND.url}${PAGE_IMAGES.share}">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="img/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="icon" href="${LOGO.favicon}" sizes="any">
+<link rel="apple-touch-icon" href="${LOGO.appleTouch}">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -311,8 +338,8 @@ pages['index.html'] = {
       </div>
     </div>
     <div class="hero-art" aria-hidden="false">
-      <div class="plate"><img src="img/6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp" ${dim('6ae75cf252a54_Crispy_Chicken_Burger_on_Wooden_Board.webp')} alt="Classic Chicken Burger met krokante kippendij op een houten plank" data-en-alt="Classic Chicken Burger with crispy chicken thigh on a wooden board" fetchpriority="high"></div>
-      <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text textLength="488" lengthAdjust="spacing"><textPath href="#circ" textLength="488" lengthAdjust="spacing">100% HALAL · 100% KIPPENDIJ · 2× GEFRITUURD · </textPath></text><image href="img/w/logo-line.png" x="72" y="56" width="58" height="84"/></svg>
+      <div class="plate"><img src="${PAGE_IMAGES.hero.src}" ${dim(PAGE_IMAGES.hero.src)} ${altAttr(PAGE_IMAGES.hero.alt)} fetchpriority="high"></div>
+      <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text textLength="488" lengthAdjust="spacing"><textPath href="#circ" textLength="488" lengthAdjust="spacing">100% HALAL · 100% KIPPENDIJ · 2× GEFRITUURD · </textPath></text><image href="${LOGO.line}" x="72" y="56" width="58" height="84"/></svg>
       <a class="price-tag" href="menu.html#burgers" ${ta('aria-label', 'Classic Chicken Burger, €9,99', 'Classic Chicken Burger, €9.99')}><span class="pt-name">Classic</span><strong class="pt-price">${money(9.99)}</strong></a>
     </div>
   </div>
@@ -342,7 +369,7 @@ pages['index.html'] = {
   <div class="wrap">
     <h2>${t('Zo simpel is het', "It's that simple")}</h2>
     <ol class="steps">
-      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="img/7465ef9251ed03559889c0296b034e7b.webp" ${dim('7465ef9251ed03559889c0296b034e7b.webp')} alt="" loading="lazy"></div><h3><a class="step-link" href="menu.html">${t('Kies je bird', 'Pick your bird')}</a></h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p><span class="step-go" aria-hidden="true">${t('Naar het menu', 'To the menu')} ${icon('arrow-right')}</span></li>
+      <li data-reveal><span class="step-n">1</span><div class="step-art"><img src="${PAGE_IMAGES.step1.src}" ${dim(PAGE_IMAGES.step1.src)} ${altAttr(PAGE_IMAGES.step1.alt)} loading="lazy"></div><h3><a class="step-link" href="menu.html">${t('Kies je bird', 'Pick your bird')}</a></h3><p>${t('Burger, tenders of een volle combo.', 'Burger, tenders or a full combo.')}</p><span class="step-go" aria-hidden="true">${t('Naar het menu', 'To the menu')} ${icon('arrow-right')}</span></li>
       <li data-reveal><span class="step-n">2</span><div class="step-art step-pay"><span>iDEAL</span><span>Wero</span></div><h3><a class="step-link" href="afrekenen.html" data-step-checkout>${t('Bestel & betaal met iDEAL', 'Order & pay with iDEAL')}</a></h3><p>${t('Of met Wero. Online, in een paar tikken.', 'Or with Wero. Online, in a few taps.')}</p><span class="step-go" aria-hidden="true">${t('Naar afrekenen', 'To checkout')} ${icon('arrow-right')}</span></li>
       <li data-reveal><span class="step-n">3</span><div class="step-art step-door">${icon('truck-delivery', 'ic ic-xl')}</div><h3><a class="step-link" href="contact.html#bezorging">${t('Crispy aan de deur', 'Crispy at your door')}</a></h3><p>${t('Gratis bezorgd. Of haal hem zelf op aan de Kruyderlaan.', 'Free delivery. Or pick it up yourself on Kruyderlaan.')}</p><span class="step-go" aria-hidden="true">${t('Bekijk de bezorgkaart', 'See the delivery map')} ${icon('arrow-right')}</span></li>
     </ol>
@@ -373,7 +400,7 @@ pages['index.html'] = {
   <div class="wrap final-in">
     <h2>${t('Honger? Je crispy bird is onderweg.', 'Hungry? Your crispy bird is on its way.')}</h2>
     <a class="btn btn-gold btn-lg" href="menu.html">${t('Bestel nu', 'Order now')} ${icon('arrow-right')}</a>
-    <img class="final-img" src="img/banner.webp" width="889" height="667" alt="Tafel vol crispy chicken burgers, friet en dips" data-en-alt="A table full of crispy chicken burgers, fries and dips" loading="lazy">
+    <img class="final-img" src="${PAGE_IMAGES.banner.src}" ${dim(PAGE_IMAGES.banner.src)} ${altAttr(PAGE_IMAGES.banner.alt)} loading="lazy">
   </div>
 </section>`,
 };
@@ -462,7 +489,7 @@ ${pageHead(t('Contact & bezorging', 'Contact & delivery'), t('Bezorgen we bij jo
   <div class="wrap">
     <div class="hub">
       <div class="hub-map">
-        <crispy-delivery-map lang="nl" order-url="menu.html" store="${BRAND.geo.lat},${BRAND.geo.lng}" store-label="The Crispy Bird" store-icon="img/logo-192.png" hide-lang${BRAND.googleMapsKey ? ` google-maps-key="${esc(BRAND.googleMapsKey)}"` : ''}></crispy-delivery-map>
+        <crispy-delivery-map lang="nl" order-url="menu.html" store="${BRAND.geo.lat},${BRAND.geo.lng}" store-label="The Crispy Bird" store-icon="${LOGO.small}" hide-lang${BRAND.googleMapsKey ? ` google-maps-key="${esc(BRAND.googleMapsKey)}"` : ''}></crispy-delivery-map>
       </div>
       <aside class="hub-side" ${ta('aria-label', 'Contactgegevens', 'Contact details')}>
         <section class="hub-block">
@@ -561,14 +588,14 @@ if (existsSync(OUT)) rmSync(OUT, { recursive: true });
 mkdirSync(join(OUT, 'img'), { recursive: true });
 mkdirSync(join(OUT, 'assets', 'map'), { recursive: true });
 for (const [file, p] of Object.entries(pages)) writeFileSync(join(OUT, file), layout({ page: file, ...p }));
-for (const f of readdirSync(join(ROOT, 'img', 'w'))) copyFileSync(join(ROOT, 'img', 'w', f), join(OUT, 'img', f));
-mkdirSync(join(OUT, 'img', 'w'), { recursive: true });
-copyFileSync(join(ROOT, 'img', 'w', 'logo-line.png'), join(OUT, 'img', 'w', 'logo-line.png'));
+cpSync(IMAGES, join(OUT, 'img'), { recursive: true });
 for (const f of ['app.css', 'app.js']) copyFileSync(join(ROOT, 'src', 'assets', f), join(OUT, 'assets', f));
 // Delivery map widget (built in the parent project) + its data.
-const MAP = join(ROOT, '..', 'dist');
+// In the handoff repository the widget is built into delivery-map/dist; here it is ../dist.
+const MAP = [join(ROOT, '..', 'delivery-map', 'dist'), join(ROOT, '..', 'dist')].find(d => existsSync(join(d, 'crispy-delivery-map.js')));
+if (!MAP) throw new Error('Build the delivery map first: npm run build in the repository root.');
 for (const f of ['crispy-delivery-map.js', 'areas.csv', 'boundaries.geojson']) copyFileSync(join(MAP, f), join(OUT, 'assets', 'map', f));
-writeFileSync(join(OUT, 'site.webmanifest'), JSON.stringify({ name: 'The Crispy Bird', short_name: 'Crispy Bird', start_url: 'index.html', display: 'standalone', background_color: '#14110c', theme_color: '#c8902a', icons: [{ src: 'img/logo-192.png', sizes: '192x192', type: 'image/png' }, { src: 'img/logo-512.png', sizes: '512x512', type: 'image/png' }] }, null, 1));
+writeFileSync(join(OUT, 'site.webmanifest'), JSON.stringify({ name: 'The Crispy Bird', short_name: 'Crispy Bird', start_url: 'index.html', display: 'standalone', background_color: '#14110c', theme_color: '#c8902a', icons: [{ src: LOGO.small, sizes: '192x192', type: 'image/png' }, { src: LOGO.large, sizes: '512x512', type: 'image/png' }] }, null, 1));
 writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /afrekenen.html\nSitemap: ${BRAND.url}sitemap.xml\n`);
 writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.keys(pages).filter(p => p !== 'afrekenen.html').map(p => `  <url><loc>${BRAND.url}${p === 'index.html' ? '' : p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log('built', Object.keys(pages).length, 'pages into', OUT);
