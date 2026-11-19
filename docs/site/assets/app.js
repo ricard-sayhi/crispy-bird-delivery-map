@@ -420,7 +420,7 @@
     $$('[data-step]', coForm).forEach(f => (f.hidden = +f.dataset.step !== n));
     $$('[data-step-dot]').forEach(d => { const k = +d.dataset.stepDot; d.toggleAttribute('aria-current', k === n); if (k === n) d.setAttribute('aria-current', 'step'); d.classList.toggle('done', k < n); });
     renderCheckout();
-    $(`[data-step="${n}"] legend`).scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    $(`[data-step="${n}"] .co-legend`).scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
     const first = $(`[data-step="${n}"] input, [data-step="${n}"] button`); if (first) first.focus({ preventScroll: true });
   }
   if (isCheckout) {
